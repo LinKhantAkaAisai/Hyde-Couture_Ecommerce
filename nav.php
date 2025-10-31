@@ -1,3 +1,14 @@
+<?php
+include "connectdb.php";
+
+$query_parent_category = " SELECT DISTINCT p.* FROM category p INNER JOIN category c ON p.categoryID = c.parentID WHERE p.parentID IS NULL";
+$result_parent_category = $conn->query($query_parent_category);
+
+$query_parent_child0_category = "SELECT p.* FROM category p LEFT JOIN category c ON p.categoryID = c.parentID WHERE p.parentID IS NULL AND c.categoryID IS NULL";
+$result_parent_child0_category = $conn->query($query_parent_child0_category);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +38,10 @@
       background-color: #fff;
     }
 
-    /* ---------- Navbar (keeps your original design) ---------- */
+    a{
+      text-decoration : none;
+    }
+
     .navbar-custom {
       background-color: #fff;
       border-bottom: 1px solid #eee;
@@ -256,92 +270,62 @@
     <div class="menu-subtitle">Explore — Collections / Men / Women / Accessories</div>
 
     <ul class="mmenu" id="mainMenu">
-      <!-- Main entries (collapsible) -->
-      <li>
-        <div class="menu-item" data-toggle="collapse" tabindex="0" role="button" aria-expanded="false" aria-controls="subMatch">
-          <span>COLLECTIONS</span>
-          <span class="toggle-sign" aria-hidden="true">+</span>
-        </div>
-        <div id="subMatch" class="submenu" aria-hidden="true">
-          <a href="#">All Match</a>
-          <a href="#">Match Shirts</a>
-        </div>
-      </li>
 
       <li>
-        <div class="menu-item" data-toggle="collapse" tabindex="0" role="button" aria-expanded="false" aria-controls="subDoomsday">
-          <span>MEN</span>
-          <span class="toggle-sign" aria-hidden="true">+</span>
-        </div>
-        <div id="subDoomsday" class="submenu" aria-hidden="true">
-          <a href="#">Collection</a>
-        </div>
+        <div class="menu-item" tabindex="0"><span class="accent-red"><a href='../views/index.php'>ALL<a></span></div>
       </li>
+      
+      <?php 
+               if ($result_parent_category && $result_parent_category->num_rows > 0) {
+                  while ($row_parent_category = $result_parent_category ->fetch_assoc()) {
+                      echo "<li>";
+                          $parent_id = $row_parent_category['categoryID'];
+                          $submenu_id = "submenu_" . $parent_id;
 
-      <li>
-        <div class="menu-item" data-toggle="collapse" tabindex="0" role="button" aria-expanded="false" aria-controls="subCollection">
-          <span>WOMEN</span>
-          <span class="toggle-sign" aria-hidden="true">+</span>
-        </div>
-        <div id="subCollection" class="submenu" aria-hidden="true">
-          <a href="#">New Arrivals</a>
-          <a href="#">Limited</a>
-        </div>
-      </li>
+                          echo "<div class='menu-item' data-toggle='collapse' tabindex='0' role='button' aria-expanded='false' aria-controls='".$submenu_id."'>";
+                              echo "<span>".$row_parent_category['categoryName']."</span>";
+                              echo "<span class='toggle-sign' aria-hidden='true'>+</span>";
+                          echo "</div>";
 
-      <li>
-        <div class="menu-item" data-toggle="collapse" tabindex="0" role="button" aria-expanded="false" aria-controls="subMatter">
-          <span>ACCESSORIES</span>
-          <span class="toggle-sign" aria-hidden="true">+</span>
-        </div>
-        <div id="subMatter" class="submenu" aria-hidden="true">
-          <a href="#">Join</a>
-          <a href="#">Benefits</a>
-        </div>
-      </li>
+                          $query_child_category = "SELECT * FROM category WHERE parentID =".intval($parent_id);
+                          $result_child_category = $conn->query($query_child_category);
 
-      <!-- Simple items -->
-    <!--  <li>
-        <div class="menu-item" tabindex="0"><a href="#" style="color:var(--menu-text); text-decoration:none">MEN +</a></div>
-      </li>
-
-      <li>
-        <div class="menu-item" tabindex="0"><a href="#" style="color:var(--menu-text); text-decoration:none">WOMEN +</a></div>
-      </li>
-
-      <li>
-        <div class="menu-item" tabindex="0"><a href="#" style="color:var(--menu-text); text-decoration:none">ACCESSORIES +</a></div>
-      </li>
--->
-      <li>
-        <div class="menu-item" tabindex="0"><a href="#" style="color:var(--menu-text); text-decoration:none">JEWELRY</a></div>
-      </li>
-
-      <li>
-        <div class="menu-item" tabindex="0"><span class="accent-lime">MUST HAVE</span></div>
-      </li>
-
-      <li>
-        <div class="menu-item" tabindex="0"><span class="accent-red">SPECIAL PRICE</span></div>
-      </li>
-
-      <!-- bottom area -->
-      <div class="menu-bottom">
-        <li>
-          <div class="menu-item" tabindex="0"><a href="#" style="color:var(--menu-text); text-decoration:none">ABOUT US</a></div>
-        </li>
-        <li>
-          <div class="menu-item" tabindex="0"><a href="#" style="color:var(--menu-text); text-decoration:none">MY ACCOUNT</a></div>
-        </li>
-      </div>
+                          echo "<div id='".$submenu_id."' class='submenu' aria-hidden='true'>";
+                      
+                          if ($result_child_category && $result_child_category->num_rows > 0) {
+                              while ($row_child_category = $result_child_category ->fetch_assoc()) {
+                                  $child_link = "../views/index.php?id=" . $row_child_category['categoryID'];
+                                  echo "<a href='".$child_link."'>".$row_child_category['categoryName']."</a>";
+                              }
+                          }
+                          echo "</div>";
+                          echo"</li>";
+                        }
+                    }
+                  
+                    if ($result_parent_child0_category && $result_parent_child0_category->num_rows > 0) {
+                      while ($row_parent_child0_category = $result_parent_child0_category ->fetch_assoc()) {
+                        echo "<li>";
+                        $child_link = "../views/index.php?id=" . $row_parent_child0_category['categoryID'];
+                        echo "<div class='menu-item' tabindex='0'><span class='accent-red'><a href='".$child_link."'>".$row_parent_child0_category['categoryName']."</a></span></div>";
+                        echo "</li>";
+                      }
+                    }
+                  ?>
+                  <!-- bottom area -->
+                  <div class="menu-bottom">
+                      <li>
+                        <div class="menu-item" tabindex="0"><a href="../views/about.php" style="color:var(--menu-text); text-decoration:none">ABOUT US</a></div>
+                      </li>
+                      <li>
+                          <div class="menu-item" tabindex="0"><a href="../views/profile.php" style="color:var(--menu-text); text-decoration:none">MY ACCOUNT</a></div>
+                      </li>
+                  </div>
     </ul>
-  </aside>
 
-  <!-- Page sample content -->
-  <!-- <main class="container text-center mt-4"> -->
-    <!-- <h4>Exclusive Collection</h4> -->
-    <!-- <p>Discover timeless fashion crafted with precision and passion. Every piece reflects elegance, sophistication, and heritage.</p> -->
-  <!-- </main> -->
+
+
+  </aside>
 
   <!-- Bootstrap JS (kept for other components) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
