@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2025 at 07:14 PM
+-- Generation Time: Nov 04, 2025 at 07:54 PM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -189,10 +189,30 @@ CREATE TABLE `orderr` (
   `totalCost` double NOT NULL,
   `orderDate` date DEFAULT NULL,
   `paymentStatus` varchar(500) DEFAULT NULL,
-  `orderStatus` varchar(500) DEFAULT NULL,
+  `orderStatus` int DEFAULT NULL,
   `trackingStatus` varchar(500) DEFAULT NULL,
   `accountID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderstatus`
+--
+
+CREATE TABLE `orderstatus` (
+  `orderStatusID` int NOT NULL,
+  `orderStatus` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `orderstatus`
+--
+
+INSERT INTO `orderstatus` (`orderStatusID`, `orderStatus`) VALUES
+(1, 'Pending Order'),
+(2, 'Active Order'),
+(3, 'Completed Order');
 
 -- --------------------------------------------------------
 
@@ -458,7 +478,14 @@ ALTER TABLE `orderitem`
 --
 ALTER TABLE `orderr`
   ADD PRIMARY KEY (`orderID`),
-  ADD KEY `accountID` (`accountID`);
+  ADD KEY `accountID` (`accountID`),
+  ADD KEY `orderStatus` (`orderStatus`);
+
+--
+-- Indexes for table `orderstatus`
+--
+ALTER TABLE `orderstatus`
+  ADD PRIMARY KEY (`orderStatusID`);
 
 --
 -- Indexes for table `photo`
@@ -557,6 +584,12 @@ ALTER TABLE `orderr`
   MODIFY `orderID` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `orderstatus`
+--
+ALTER TABLE `orderstatus`
+  MODIFY `orderStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
@@ -636,7 +669,8 @@ ALTER TABLE `orderitem`
 -- Constraints for table `orderr`
 --
 ALTER TABLE `orderr`
-  ADD CONSTRAINT `orderr_ibfk_1` FOREIGN KEY (`accountID`) REFERENCES `account` (`accountID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `orderr_ibfk_1` FOREIGN KEY (`accountID`) REFERENCES `account` (`accountID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderr_ibfk_2` FOREIGN KEY (`orderStatus`) REFERENCES `orderstatus` (`orderStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `photo`
