@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    font-family: 'Vollkorn';
+}
+
+.sidebar .nav-link {
+    transition: 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #ffffff;
+    color: #000000 !important;
+}
+
+.sidebar .nav-link.active {
+    background-color: #ff00ee;
+    color: #ffffff !important;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.title{
+    margin-top : 20px;
+}

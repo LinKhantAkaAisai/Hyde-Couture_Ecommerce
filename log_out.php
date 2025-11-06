@@ -1,0 +1,24 @@
+<?php 
+    include './layout/login_error_message.php';
+    $currentPage = "log_out.php";
+    include './logInCheck.php'; 
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log out</title>
+    <?php include "./layout/header.php"; ?>
+</head>
+<body>
+    <?php
+        include "nav.php";
+        if($login == true) {
+            echo "<div class='main-content'>";
+            echo "<h1>Log Out</h1>";
+            echo "</div>";
+            }
+    ?>
+</body>
+</html>
