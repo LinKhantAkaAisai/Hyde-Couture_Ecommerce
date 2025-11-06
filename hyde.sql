@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2025 at 07:54 PM
+-- Generation Time: Nov 06, 2025 at 01:13 AM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -35,15 +35,17 @@ CREATE TABLE `account` (
   `phoneNumber` varchar(500) NOT NULL,
   `birthday` date NOT NULL,
   `roleID` int NOT NULL,
-  `pin` varchar(6) DEFAULT NULL
+  `pin` varchar(6) DEFAULT NULL,
+  `profile` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`) VALUES
-(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989');
+INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`, `profile`) VALUES
+(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', NULL),
+(2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, '112233', NULL);
 
 -- --------------------------------------------------------
 
@@ -437,7 +439,8 @@ INSERT INTO `stock` (`stockID`, `quantity`, `productID`, `sizeID`, `colorID`) VA
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`accountID`),
-  ADD KEY `roleID` (`roleID`);
+  ADD KEY `roleID` (`roleID`),
+  ADD KEY `profile` (`profile`);
 
 --
 -- Indexes for table `address`
@@ -545,7 +548,7 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `accountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `accountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `address`
@@ -639,7 +642,8 @@ ALTER TABLE `stock`
 -- Constraints for table `account`
 --
 ALTER TABLE `account`
-  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`roleID`) REFERENCES `role` (`roleID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`roleID`) REFERENCES `role` (`roleID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `account_ibfk_2` FOREIGN KEY (`profile`) REFERENCES `photo` (`photoID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `address`
