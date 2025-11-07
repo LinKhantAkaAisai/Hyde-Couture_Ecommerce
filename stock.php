@@ -22,7 +22,7 @@ include './logInCheck.php';
         $login = $_SESSION['login'] ?? false;
         if($login == true) {
         echo "<div class='main-content'>";
-        echo "<h1>Profile</h1>";
+        echo "<h1>Stock</h1>";
         echo "Account ID is ".$_SESSION['accountID'];
         echo "</div>";
         }
