@@ -1,7 +1,12 @@
 <?php 
-    include './layout/login_error_message.php';
-    $currentPage = "category.php";
-    include './logInCheck.php'; 
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include './layout/login_error_message.php';
+$currentPage = "product.php";
+include './logInCheck.php'; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,10 +19,11 @@
 <body>
     <?php
         include "nav.php";
+        $login = $_SESSION['login'] ?? false;  // Get from session
         if($login == true) {
-            echo "<div class='main-content'>";
-            echo "<h1>Category</h1>";
-            echo "</div>";
+        echo "<div class='main-content'>";
+        echo "<h1>Category</h1>";
+        echo "</div>";
         }
     ?>
 </body>
