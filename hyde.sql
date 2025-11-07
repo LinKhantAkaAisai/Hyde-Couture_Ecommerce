@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2025 at 01:13 AM
+-- Generation Time: Nov 07, 2025 at 04:20 AM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -212,9 +212,8 @@ CREATE TABLE `orderstatus` (
 --
 
 INSERT INTO `orderstatus` (`orderStatusID`, `orderStatus`) VALUES
-(1, 'Pending Order'),
-(2, 'Active Order'),
-(3, 'Completed Order');
+(1, 'Active Order'),
+(2, 'Completed Order');
 
 -- --------------------------------------------------------
 
