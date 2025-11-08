@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2025 at 10:46 AM
+-- Generation Time: Nov 08, 2025 at 11:13 AM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -262,6 +262,15 @@ CREATE TABLE `paymentslip` (
   `paymentSlip` int NOT NULL,
   `orderID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `paymentslip`
+--
+
+INSERT INTO `paymentslip` (`paymentSlipID`, `paymentSlip`, `orderID`) VALUES
+(1, 32, 3),
+(2, 33, 4),
+(3, 34, 4);
 
 -- --------------------------------------------------------
 
@@ -741,7 +750,7 @@ ALTER TABLE `orderstatus`
 -- AUTO_INCREMENT for table `paymentslip`
 --
 ALTER TABLE `paymentslip`
-  MODIFY `paymentSlipID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `paymentSlipID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `paymentstatus`
