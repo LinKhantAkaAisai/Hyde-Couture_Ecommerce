@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2025 at 04:20 AM
+-- Generation Time: Nov 08, 2025 at 10:46 AM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -44,8 +44,10 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`, `profile`) VALUES
-(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', NULL),
-(2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, '112233', NULL);
+(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', 37),
+(2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, NULL, 35),
+(3, 'Myat Thiri Khaing', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '09952090401', '2005-02-16', 1, NULL, 36),
+(4, 'Taylor Swift', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '0823059272', '1989-12-13', 1, NULL, 38);
 
 -- --------------------------------------------------------
 
@@ -71,7 +73,10 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`addressID`, `street`, `township`, `city`, `state`, `postalCode`, `country`, `completeAddress`, `mapLink`, `accountID`) VALUES
-(1, 'Ek Charoean Alley 6', 'Lak Hok', 'Bangkok', 'Mueang Pathum Thani', '12000', 'Thailand', 'Ek Charoen 6 Alley, Lak Hok, Mueang Pathum Thani District, Pathum Thani 12000', 'https://maps.app.goo.gl/z3gLy4EaWnToyFDCA', 1);
+(1, 'Ek Charoean Alley 6', 'Lak Hok', 'Bangkok', 'Mueang Pathum Thani', '12000', 'Thailand', 'Ek Charoen 6 Alley, Lak Hok, Mueang Pathum Thani District, Pathum Thani 12000', 'https://maps.app.goo.gl/z3gLy4EaWnToyFDCA', 1),
+(2, '17th street', 'Aung Myae Thar Zan', 'Mandalay', 'Mandalay', '05011', 'Myanmar', 'Cornor of 17th & 89th street, Chan Aye Thar Zan township, Mandalay', '', 2),
+(3, '62th street', 'Aung Myae Thar Zan', 'Yangon', 'Yangon', '11421', 'Myanmar', '62th street, between 19th and 20th street, Yangon,Myanmar', '', 3),
+(4, '19th street', 'North Dagon', 'Khao Yai', 'Pak Chong', '12000', 'Thailand', 'room 39, Movin\' pick resort, Khao Yai', 'https://maps.app.goo.gl/eDrSZrL1ZrBjjf2o6', 4);
 
 -- --------------------------------------------------------
 
@@ -152,7 +157,7 @@ INSERT INTO `color` (`colorID`, `colorName`, `colorCode`) VALUES
 CREATE TABLE `discount` (
   `discountID` int NOT NULL,
   `range1` int NOT NULL,
-  `range2` int NOT NULL,
+  `range2` int DEFAULT NULL,
   `percentage` double NOT NULL,
   `productID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -163,7 +168,9 @@ CREATE TABLE `discount` (
 
 INSERT INTO `discount` (`discountID`, `range1`, `range2`, `percentage`, `productID`) VALUES
 (1, 10, 19, 10, 1),
-(2, 20, 29, 20, 1);
+(2, 20, 29, 20, 1),
+(3, 10, 19, 10, 2),
+(4, 20, NULL, 30, 2);
 
 -- --------------------------------------------------------
 
@@ -176,8 +183,26 @@ CREATE TABLE `orderitem` (
   `quantity` int NOT NULL,
   `productID` int NOT NULL,
   `totalCost` double NOT NULL,
-  `orderID` int NOT NULL
+  `orderID` int NOT NULL,
+  `discountedTotalCost` double DEFAULT NULL,
+  `color` int NOT NULL,
+  `size` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `orderitem`
+--
+
+INSERT INTO `orderitem` (`orderItemID`, `quantity`, `productID`, `totalCost`, `orderID`, `discountedTotalCost`, `color`, `size`) VALUES
+(1, 1, 1, 165000, 1, NULL, 1, 1),
+(2, 1, 2, 67500, 1, NULL, 1, 4),
+(3, 15, 1, 2475000, 2, 2227500, 1, 2),
+(4, 1, 1, 165000, 3, NULL, 1, 4),
+(5, 1, 4, 165000, 3, NULL, 1, 4),
+(6, 1, 6, 77500, 3, NULL, 5, 2),
+(7, 35, 2, 2362500, 4, 1653750, 1, 4),
+(8, 1, 1, 165000, 4, NULL, 1, 3),
+(9, 1, 4, 155000, 4, NULL, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -190,11 +215,22 @@ CREATE TABLE `orderr` (
   `paymentValid` tinyint NOT NULL,
   `totalCost` double NOT NULL,
   `orderDate` date DEFAULT NULL,
-  `paymentStatus` varchar(500) DEFAULT NULL,
+  `paymentStatus` int DEFAULT NULL,
   `orderStatus` int DEFAULT NULL,
-  `trackingStatus` varchar(500) DEFAULT NULL,
-  `accountID` int NOT NULL
+  `trackingStatus` int DEFAULT NULL,
+  `accountID` int NOT NULL,
+  `paymentType` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `orderr`
+--
+
+INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`) VALUES
+(1, 1, 125000, '2025-11-06', 3, 1, 1, 2, 1),
+(2, 1, 2227500, '2025-11-08', 3, 1, 1, 3, 1),
+(3, 1, 407500, '2025-11-05', 2, 2, 3, 4, 2),
+(4, 0, 1973750, '2025-11-10', 2, 1, 1, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -218,13 +254,64 @@ INSERT INTO `orderstatus` (`orderStatusID`, `orderStatus`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `paymentslip`
+--
+
+CREATE TABLE `paymentslip` (
+  `paymentSlipID` int NOT NULL,
+  `paymentSlip` int NOT NULL,
+  `orderID` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `paymentstatus`
+--
+
+CREATE TABLE `paymentstatus` (
+  `paymentStatusID` int NOT NULL,
+  `paymentStatus` varchar(1000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `paymentstatus`
+--
+
+INSERT INTO `paymentstatus` (`paymentStatusID`, `paymentStatus`) VALUES
+(1, 'haven\'t paid'),
+(2, 'already paid'),
+(3, 'will pay when order arrive');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `paymenttype`
+--
+
+CREATE TABLE `paymenttype` (
+  `paymentTypeID` int NOT NULL,
+  `paymentType` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `paymenttype`
+--
+
+INSERT INTO `paymenttype` (`paymentTypeID`, `paymentType`) VALUES
+(1, 'Cash on delivery'),
+(2, 'Bank Transfer');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `photo`
 --
 
 CREATE TABLE `photo` (
   `photoID` int NOT NULL,
   `photoName` varchar(500) NOT NULL,
-  `productID` int NOT NULL
+  `productID` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
@@ -262,7 +349,14 @@ INSERT INTO `photo` (`photoID`, `photoName`, `productID`) VALUES
 (28, 'p6_i1.jpg', 6),
 (29, 'p6_i2.jpg', 6),
 (30, 'p6_i3.jpg', 6),
-(31, 'p6_i4.jpg', 6);
+(31, 'p6_i4.jpg', 6),
+(32, 'slip_order3_1.jpg', NULL),
+(33, 'slip_order4_1.jpg', NULL),
+(34, 'slip_order4_2.jpg', NULL),
+(35, 'jennifer.jpg', NULL),
+(36, 'myat.jpg', NULL),
+(37, 'minsitt.jpg', NULL),
+(38, 'taylor.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -287,11 +381,11 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`productID`, `productName`, `price`, `discountedPrice`, `postedDate`, `description`, `waitingWeek`, `preorder`) VALUES
 (1, 'ORIGAMI FADED WASH JEANS', 165000, NULL, '2025-10-31', 'AVAILABLE At Mercury physical stores', 3, 0),
-(2, 'VERVESV OG CLASSIC LOGO TEE', 77500, 67500, '2025-10-30', 'Crafted from 100% cotton 210gsm midweight single jersey fabric. 1x1 rib round neck. \r\nNew boxy cropped fit silhouette. \r\nOne of our signature rainbow reflective logo print on front. Cut, sewn and printed in Yangon. Designed by Vervesv in Bangkok.', 2, 1),
-(3, 'VERVESV Cotton Leather 6 Panel Hat', 57500, 50000, '2025-10-15', '• 100% washed cotton + PU leather\r\n• Embroidery eyelets\r\n• Flat embroidery logo\r\n• Tri glide buckle \r\n• Single stitch detailing at back \r\n• PU leather button on top\r\n• 6 panel cut \r\n• Designed by vervesv in Bangkok\r\n• Cut & sewn in China \r\n• Embroidered in Yangon', 2, 1),
-(4, 'Iconic V3 sweatshirt in black', 165000, 155000, '2025-10-01', '• 420gsm heavyweight loopback terry \r\n• 85% cotton 15% polyester mixed\r\n• 450gsm 1x1 ribbed cuff, hem & round neck\r\n• Iconic artwork printed on front & back\r\n• Loose fit cut & streetwear silhouette\r\n• Cut & sewn in China\r\n• Printed & finished in Myanmar', 2, 0),
-(5, 'Druga UV protection jacket', 200000, 191000, '2025-10-01', '• UPF50+ protection\r\n• 50g flyweight material \r\n• Water resistance \r\n• Double zipper closure\r\n• Hidden extra large pocket \r\n• For outdoors & sports', 3, 0),
-(6, 'HEMi BACKLESS DRESS in charcoal', 77500, NULL, '2025-10-02', 'Where minimalism meets bold elegance. \r\nCrafted from 95% polyester 5% elastane 4 way stretch fabric. Designed to hug every curve while showcasing an effortlessly chic open-back cut, this dress redefines sophistication.\r\nAvailable exclusively online, the Hemi Backless is the statement piece you didn’t know you needed – until now. Pair it with heels for a night out, or make it your go-to power outfit.', 2, 0);
+(2, 'VERVESV OG CLASSIC LOGO TEE', 77500, 67500, '2025-10-30', 'Crafted from 100% cotton 210gsm midweight single jersey fabric. 1x1 rib round neck. \nNew boxy cropped fit silhouette. \nOne of our signature rainbow reflective logo print on front. Cut, sewn and printed in Yangon. Designed by Vervesv in Bangkok.', 2, 1),
+(3, 'VERVESV Cotton Leather 6 Panel Hat', 57500, 50000, '2025-10-15', '• 100% washed cotton + PU leather\n• Embroidery eyelets\n• Flat embroidery logo\n• Tri glide buckle \n• Single stitch detailing at back \n• PU leather button on top\n• 6 panel cut \n• Designed by vervesv in Bangkok\n• Cut & sewn in China \n• Embroidered in Yangon', 2, 1),
+(4, 'Iconic V3 sweatshirt in black', 165000, 155000, '2025-10-01', '• 420gsm heavyweight loopback terry \n• 85% cotton 15% polyester mixed\n• 450gsm 1x1 ribbed cuff, hem & round neck\n• Iconic artwork printed on front & back\n• Loose fit cut & streetwear silhouette\n• Cut & sewn in China\n• Printed & finished in Myanmar', 2, 0),
+(5, 'Druga UV protection jacket', 200000, 191000, '2025-10-01', '• UPF50+ protection\n• 50g flyweight material \n• Water resistance \n• Double zipper closure\n• Hidden extra large pocket \n• For outdoors & sports', 3, 0),
+(6, 'HEMi BACKLESS DRESS in charcoal', 77500, NULL, '2025-10-02', 'Where minimalism meets bold elegance. \nCrafted from 95% polyester 5% elastane 4 way stretch fabric. Designed to hug every curve while showcasing an effortlessly chic open-back cut, this dress redefines sophistication.\nAvailable exclusively online, the Hemi Backless is the statement piece you didn’t know you needed – until now. Pair it with heels for a night out, or make it your go-to power outfit.', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -429,6 +523,26 @@ INSERT INTO `stock` (`stockID`, `quantity`, `productID`, `sizeID`, `colorID`) VA
 (21, 10, 6, 5, 4),
 (22, 10, 6, 5, 5);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trackingstatus`
+--
+
+CREATE TABLE `trackingstatus` (
+  `trackingStatusID` int NOT NULL,
+  `trackingStatus` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `trackingstatus`
+--
+
+INSERT INTO `trackingstatus` (`trackingStatusID`, `trackingStatus`) VALUES
+(1, 'packing order'),
+(2, 'order shipped'),
+(3, 'order delivered');
+
 --
 -- Indexes for dumped tables
 --
@@ -473,7 +587,10 @@ ALTER TABLE `discount`
 --
 ALTER TABLE `orderitem`
   ADD PRIMARY KEY (`orderItemID`),
-  ADD KEY `orderID` (`orderID`);
+  ADD KEY `orderID` (`orderID`),
+  ADD KEY `productID` (`productID`),
+  ADD KEY `color` (`color`),
+  ADD KEY `size` (`size`);
 
 --
 -- Indexes for table `orderr`
@@ -481,13 +598,36 @@ ALTER TABLE `orderitem`
 ALTER TABLE `orderr`
   ADD PRIMARY KEY (`orderID`),
   ADD KEY `accountID` (`accountID`),
-  ADD KEY `orderStatus` (`orderStatus`);
+  ADD KEY `orderStatus` (`orderStatus`),
+  ADD KEY `paymentStatus` (`paymentStatus`),
+  ADD KEY `trackingStatus` (`trackingStatus`),
+  ADD KEY `paymentType` (`paymentType`);
 
 --
 -- Indexes for table `orderstatus`
 --
 ALTER TABLE `orderstatus`
   ADD PRIMARY KEY (`orderStatusID`);
+
+--
+-- Indexes for table `paymentslip`
+--
+ALTER TABLE `paymentslip`
+  ADD PRIMARY KEY (`paymentSlipID`),
+  ADD KEY `paymentSlip` (`paymentSlip`),
+  ADD KEY `orderID` (`orderID`);
+
+--
+-- Indexes for table `paymentstatus`
+--
+ALTER TABLE `paymentstatus`
+  ADD PRIMARY KEY (`paymentStatusID`);
+
+--
+-- Indexes for table `paymenttype`
+--
+ALTER TABLE `paymenttype`
+  ADD PRIMARY KEY (`paymentTypeID`);
 
 --
 -- Indexes for table `photo`
@@ -540,6 +680,12 @@ ALTER TABLE `stock`
   ADD KEY `colorID` (`colorID`);
 
 --
+-- Indexes for table `trackingstatus`
+--
+ALTER TABLE `trackingstatus`
+  ADD PRIMARY KEY (`trackingStatusID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -547,13 +693,13 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `accountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `accountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -571,19 +717,19 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT for table `discount`
 --
 ALTER TABLE `discount`
-  MODIFY `discountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `discountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `orderitem`
 --
 ALTER TABLE `orderitem`
-  MODIFY `orderItemID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `orderItemID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `orderr`
 --
 ALTER TABLE `orderr`
-  MODIFY `orderID` int NOT NULL AUTO_INCREMENT;
+  MODIFY `orderID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `orderstatus`
@@ -592,10 +738,28 @@ ALTER TABLE `orderstatus`
   MODIFY `orderStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `paymentslip`
+--
+ALTER TABLE `paymentslip`
+  MODIFY `paymentSlipID` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `paymentstatus`
+--
+ALTER TABLE `paymentstatus`
+  MODIFY `paymentStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `paymenttype`
+--
+ALTER TABLE `paymenttype`
+  MODIFY `paymentTypeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -634,6 +798,12 @@ ALTER TABLE `stock`
   MODIFY `stockID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
+-- AUTO_INCREMENT for table `trackingstatus`
+--
+ALTER TABLE `trackingstatus`
+  MODIFY `trackingStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -666,14 +836,27 @@ ALTER TABLE `discount`
 -- Constraints for table `orderitem`
 --
 ALTER TABLE `orderitem`
-  ADD CONSTRAINT `orderitem_ibfk_1` FOREIGN KEY (`orderID`) REFERENCES `orderr` (`orderID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `orderitem_ibfk_1` FOREIGN KEY (`orderID`) REFERENCES `orderr` (`orderID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderitem_ibfk_2` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderitem_ibfk_3` FOREIGN KEY (`color`) REFERENCES `color` (`colorID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderitem_ibfk_4` FOREIGN KEY (`size`) REFERENCES `size` (`sizeID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `orderr`
 --
 ALTER TABLE `orderr`
   ADD CONSTRAINT `orderr_ibfk_1` FOREIGN KEY (`accountID`) REFERENCES `account` (`accountID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `orderr_ibfk_2` FOREIGN KEY (`orderStatus`) REFERENCES `orderstatus` (`orderStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `orderr_ibfk_2` FOREIGN KEY (`orderStatus`) REFERENCES `orderstatus` (`orderStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderr_ibfk_3` FOREIGN KEY (`paymentStatus`) REFERENCES `paymentstatus` (`paymentStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderr_ibfk_4` FOREIGN KEY (`trackingStatus`) REFERENCES `trackingstatus` (`trackingStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderr_ibfk_5` FOREIGN KEY (`paymentType`) REFERENCES `paymenttype` (`paymentTypeID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `paymentslip`
+--
+ALTER TABLE `paymentslip`
+  ADD CONSTRAINT `paymentslip_ibfk_1` FOREIGN KEY (`paymentSlip`) REFERENCES `photo` (`photoID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `paymentslip_ibfk_2` FOREIGN KEY (`orderID`) REFERENCES `orderr` (`orderID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `photo`
