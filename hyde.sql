@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2025 at 11:13 AM
+-- Generation Time: Nov 09, 2025 at 01:05 PM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -219,18 +219,19 @@ CREATE TABLE `orderr` (
   `orderStatus` int DEFAULT NULL,
   `trackingStatus` int DEFAULT NULL,
   `accountID` int NOT NULL,
-  `paymentType` int DEFAULT NULL
+  `paymentType` int DEFAULT NULL,
+  `addressID` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `orderr`
 --
 
-INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`) VALUES
-(1, 1, 125000, '2025-11-06', 3, 1, 1, 2, 1),
-(2, 1, 2227500, '2025-11-08', 3, 1, 1, 3, 1),
-(3, 1, 407500, '2025-11-05', 2, 2, 3, 4, 2),
-(4, 0, 1973750, '2025-11-10', 2, 1, 1, 4, 2);
+INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`, `addressID`) VALUES
+(1, 1, 125000, '2025-11-06', 3, 1, 1, 2, 1, 2),
+(2, 1, 2227500, '2025-11-08', 3, 1, 1, 3, 1, 3),
+(3, 1, 407500, '2025-11-05', 2, 2, 3, 4, 2, 4),
+(4, 0, 1973750, '2025-11-10', 2, 1, 1, 4, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -606,11 +607,12 @@ ALTER TABLE `orderitem`
 --
 ALTER TABLE `orderr`
   ADD PRIMARY KEY (`orderID`),
-  ADD KEY `accountID` (`accountID`),
   ADD KEY `orderStatus` (`orderStatus`),
   ADD KEY `paymentStatus` (`paymentStatus`),
   ADD KEY `trackingStatus` (`trackingStatus`),
-  ADD KEY `paymentType` (`paymentType`);
+  ADD KEY `paymentType` (`paymentType`),
+  ADD KEY `accountID` (`accountID`),
+  ADD KEY `orderr_ibfk_6` (`addressID`);
 
 --
 -- Indexes for table `orderstatus`
@@ -858,7 +860,8 @@ ALTER TABLE `orderr`
   ADD CONSTRAINT `orderr_ibfk_2` FOREIGN KEY (`orderStatus`) REFERENCES `orderstatus` (`orderStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `orderr_ibfk_3` FOREIGN KEY (`paymentStatus`) REFERENCES `paymentstatus` (`paymentStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `orderr_ibfk_4` FOREIGN KEY (`trackingStatus`) REFERENCES `trackingstatus` (`trackingStatusID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `orderr_ibfk_5` FOREIGN KEY (`paymentType`) REFERENCES `paymenttype` (`paymentTypeID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `orderr_ibfk_5` FOREIGN KEY (`paymentType`) REFERENCES `paymenttype` (`paymentTypeID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orderr_ibfk_6` FOREIGN KEY (`addressID`) REFERENCES `address` (`addressID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `paymentslip`
