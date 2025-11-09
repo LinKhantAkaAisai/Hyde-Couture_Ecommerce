@@ -27,6 +27,9 @@ if (session_status() === PHP_SESSION_NONE) {
             <a class="nav-link text-white" href="category.php"><i class="bi bi-tags me-2"></i>Category</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link text-white" href="stock.php"><i class="bi bi-graph-up me-2"></i>Stock</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-white" href="discount.php"><i class="bi bi-percent me-2"></i>Discount Item</a>
         </li>
         <li class="nav-item">
