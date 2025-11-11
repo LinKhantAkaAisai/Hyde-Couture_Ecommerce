@@ -1,12 +1,18 @@
 <?php
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 ?>
-<div class="sidebar p-3 text-white" style="width: 250px; height: 100vh; position: fixed; top: 0; left: 0; background-color:rgb(2, 62, 26); overflow-x: hidden; z-index: 1;">
-    <h4 class="text-center mb-4 title"> Admin Dashboard</h4>    
+
+<button class="sidebar-toggle d-lg-none position-fixed top-0 start-0 m-3" type="button" id="sidebarToggle">
+    <i class="bi bi-list"></i>
+</button>
+
+<div class="sidebar p-3 text-white" id="sidebar">
+    <div class="d-lg-none text-end">
+        <button class="btn btn-close btn-close-white" id="closeSidebar"></button>
+    </div>
+    <h4 class="text-center mb-4 title">Admin Dashboard</h4>
     <ul class="nav flex-column">
         <li class="nav-item">
             <a class="nav-link text-white" href="profile.php"><i class="bi bi-person me-2"></i>Profile</a>
@@ -40,3 +46,38 @@ if (session_status() === PHP_SESSION_NONE) {
         </li>
     </ul>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const sidebar       = document.getElementById('sidebar');
+    const toggleBtn     = document.getElementById('sidebarToggle');
+    const closeBtn      = document.getElementById('closeSidebar');
+
+    toggleBtn.addEventListener('click', () => sidebar.classList.add('open'));
+    if (closeBtn) closeBtn.addEventListener('click', () => sidebar.classList.remove('open'));
+
+    document.addEventListener('click', e => {
+        if (window.innerWidth < 992 && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    });
+});
+</script>
+
+<style>
+
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-1000px); /* Match width */
+        width: 100%;
+    }
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}
+@media (min-width: 820) {
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+}
+</style>
