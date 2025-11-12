@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2025 at 01:05 PM
+-- Generation Time: Nov 12, 2025 at 03:51 PM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -36,18 +36,19 @@ CREATE TABLE `account` (
   `birthday` date NOT NULL,
   `roleID` int NOT NULL,
   `pin` varchar(6) DEFAULT NULL,
-  `profile` int DEFAULT NULL
+  `profile` int DEFAULT NULL,
+  `registerDate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`, `profile`) VALUES
-(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', 37),
-(2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, NULL, 35),
-(3, 'Myat Thiri Khaing', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '09952090401', '2005-02-16', 1, NULL, 36),
-(4, 'Taylor Swift', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '0823059272', '1989-12-13', 1, NULL, 38);
+INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`, `profile`, `registerDate`) VALUES
+(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', 40, '2025-10-01'),
+(2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, NULL, 35, '2025-09-18'),
+(3, 'Myat Thiri Khaing', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '09952090401', '2005-02-16', 1, NULL, 36, '2025-11-01'),
+(4, 'Taylor Swift', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '0823059272', '1989-12-13', 1, NULL, 38, '2025-10-30');
 
 -- --------------------------------------------------------
 
@@ -228,10 +229,10 @@ CREATE TABLE `orderr` (
 --
 
 INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`, `addressID`) VALUES
-(1, 1, 125000, '2025-11-06', 3, 1, 1, 2, 1, 2),
+(1, 1, 232500, '2025-11-06', 3, 1, 1, 2, 1, 2),
 (2, 1, 2227500, '2025-11-08', 3, 1, 1, 3, 1, 3),
-(3, 1, 407500, '2025-11-05', 2, 2, 3, 4, 2, 4),
-(4, 0, 1973750, '2025-11-10', 2, 1, 1, 4, 2, 4);
+(3, 1, 407500, '2025-11-05', 2, 1, 3, 4, 2, 4),
+(4, 0, 1973750, '2025-11-10', 2, 2, 1, 4, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -366,7 +367,9 @@ INSERT INTO `photo` (`photoID`, `photoName`, `productID`) VALUES
 (35, 'jennifer.jpg', NULL),
 (36, 'myat.jpg', NULL),
 (37, 'minsitt.jpg', NULL),
-(38, 'taylor.jpg', NULL);
+(38, 'taylor.jpg', NULL),
+(39, 'hhh.jpg', NULL),
+(40, 'photo_2025-02-12_00-54-12 - Copy.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -710,7 +713,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -770,7 +773,7 @@ ALTER TABLE `paymenttype`
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `product`
