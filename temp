@@ -1,0 +1,72 @@
+<?php 
+
+include "../connection/connectdb.php";
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include './layout/login_error_message.php';
+$currentPage = "specific_user.php";
+include './logInCheck.php'; 
+
+$userID = $_GET['userID'];
+
+$query = "SELECT * FROM account JOIN photo ON account.profile = photo.photoID WHERE account.roleID = 1 and account.accountID = $userID";
+$result = $conn->query($query);
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+    <?php include "./layout/header.php"; ?>
+</head>
+<body>
+    <?php
+        include "nav.php";
+        $login = $_SESSION['login'] ?? false;  
+        if($login == true) {
+        echo "<div class='main-content'>";
+        echo "<h1>User Profile</h1>";
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "Profile : <image src='../image/".$row['photoName']."' width='200px'></image><br>";
+                echo "user ID : ".$row['accountID']."<br>";
+                echo "name : ".$row['name']."<br>";
+                echo "registration Date : ".$row['registerDate']."<br>";
+                echo "email : ".$row['email']."<br>";
+                echo "birthday : ".$row['birthday']."<br>";
+                echo "phone Number : ".$row['phoneNumber']."<br>";
+                echo "Profile : ".$row['photoName']."<br>";
+
+                //__________
+                $query_address = "SELECT * FROM address WHERE address.accountID = ".$row['accountID'];
+                $result_address = $conn->query($query_address);
+
+                if ($result_address && $result_address->num_rows > 0) {
+                    while ($row_address = $result_address->fetch_assoc()) {
+                        echo "street : ".$row_address['street']."<br>";
+                        echo "township : ".$row_address['township']."<br>";
+                        echo "city : ".$row_address['city']."<br>";
+                        echo "state : ".$row_address['state']."<br>";
+                        echo "postal Code : ".$row_address['country']."<br>";
+                        echo "map Link : ".$row_address['completeAddress']."<br>";
+                        echo "map link : ".$row_address['mapLink']."<br>"; //wil show if it is not null
+                    }
+                }
+
+                echo "<a href='user_active_order.php?userID=".$row['accountID']."'>See Active Orders</a><br>";
+                echo "<a href='user_completed_order.php?userID=".$row['accountID']."'>See Completed Orders</a><br>";
+
+            }
+        }
+
+        echo "</div>";
+        }
+    ?>
+</body>
+</html>

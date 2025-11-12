@@ -7,38 +7,40 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 include './layout/login_error_message.php';
-$currentPage = "product.php";
-include './logInCheck.php';
+$currentPage = "active_order.php";
+include './logInCheck.php'; 
+
+$userID = $_GET['userID'];
 
 $filter = $_GET['filter'] ?? 'all';
 $export = $_GET['export'] ?? false;
 
 $whereDate = "";
 if ($filter === 'this_week') {
-    $whereDate = " AND account.registerDate >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)";
+    $whereDate = " AND orderr.orderDate >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)";
 } elseif ($filter === 'this_month') {
-    $whereDate = " AND YEAR(account.registerDate) = YEAR(CURDATE()) AND MONTH(account.registerDate) = MONTH(CURDATE())";
+    $whereDate = " AND YEAR(orderr.orderDate) = YEAR(CURDATE()) AND MONTH(orderr.orderDate) = MONTH(CURDATE())";
 }
 
-$query = "SELECT * FROM account WHERE account.roleID = 1 $whereDate ORDER BY account.registerDate DESC";
+$query = "SELECT * FROM orderr JOIN account ON orderr.accountID = account.accountID WHERE orderr.orderStatus = 1 $whereDate AND orderr.accountID = $userID ORDER BY orderr.orderDate DESC";
 $result = $conn->query($query);
 
 if ($export === 'csv') {
     $csvResult = $conn->query($query);
 
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=user_accounts_' . date('Ymd_His') . '.csv');
+    header('Content-Disposition: attachment; filename=userID_'.$userID.'_active_orders_' . date('Ymd_His') . '.csv');
 
     $out = fopen('php://output', 'w');
-    fputcsv($out, ['User ID', 'Customer Name', 'Email', 'Registration Date', 'Birthday']);
+    fputcsv($out, ['Order ID', 'Customer Name', 'Sub Total (MMK)', 'Order Date', 'Status']);
 
     while ($row = $csvResult->fetch_assoc()) {
         fputcsv($out, [
-            $row['accountID'],
+            $row['orderID'],
             $row['name'],
-            $row['email'],
-            date('M j, Y', strtotime($row['registerDate'])),
-            date('M j, Y', strtotime($row['birthday']))
+            $row['totalCost'],
+            date('M j, Y h:i A', strtotime($row['orderDate'])),
+            'New Order'
         ]);
     }
     fclose($out);
@@ -51,7 +53,7 @@ if ($export === 'csv') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
+    <title>User Active Order</title>
     <?php include "./layout/header.php"; ?>
     <style>
         .main-content {
@@ -354,57 +356,58 @@ if ($export === 'csv') {
 <body>
     <?php
         include "nav.php";
-        $login = $_SESSION['login'] ?? false;  // Get from session
+        $login = $_SESSION['login'] ?? false;  
         if($login == true) {
         echo "<div class='main-content'>";
         
         echo "<form id='filterForm' method='get' style='display:inline;'>";
-        echo "<div class='page-header'>";
-        echo "<h1>User Accounts</h1>";
-        echo "<div class='header-actions'>";
+            echo "<div class='page-header'>";
+            echo "<h1>User Active Orders</h1>";
+            echo "<div class='header-actions'>";
 
-        echo "<button type='submit' name='export' value='csv'><i class='bi bi-download'></i> Export</button>";
+            echo "<input type='hidden' name='userID' value='" . htmlspecialchars($userID) . "'>";
+            echo "<button type='submit' name='export' value='csv'><i class='bi bi-download'></i> Export</button>";
 
-        echo "<select name='filter' onchange='document.getElementById(\"filterForm\").submit();'>";
-        echo "<option value='all'"      . ($filter === 'all'      ? ' selected' : '') . ">All Time</option>";
-        echo "<option value='this_week'". ($filter === 'this_week'? ' selected' : '') . ">This Week</option>";
-        echo "<option value='this_month'".($filter === 'this_month'? ' selected' : '') . ">This Month</option>";
-        echo "</select>";
+            echo "<select name='filter' onchange='document.getElementById(\"filterForm\").submit();'>";
+            echo "<option value='all'"      . ($filter === 'all'      ? ' selected' : '') . ">All Time</option>";
+            echo "<option value='this_week'". ($filter === 'this_week'? ' selected' : '') . ">This Week</option>";
+            echo "<option value='this_month'".($filter === 'this_month'? ' selected' : '') . ">This Month</option>";
+            echo "</select>";
 
-        echo "</div></div></form>";
+            echo "</div></div></form>";
 
-    if ($result && $result->num_rows > 0) {
-        echo "<table class='orders-table'>";
-        echo "<thead><tr>";
-        echo "<th>User ID</th>";
-        echo "<th>Name</th>";
-        echo "<th>Email</th>";
-        echo "<th>Registeration Date</th>";
-        echo "<th>Birthday</th>";
-        echo "<th>Action</th>";
-        echo "</tr></thead>";
-        echo "<tbody>";
+        if ($result && $result->num_rows > 0) {
+            echo "<table class='orders-table'>";
+            echo "<thead><tr>";
+            echo "<th>Order ID</th>";
+            echo "<th>Name</th>";
+            echo "<th>Sub Total</th>";
+            echo "<th>Order Date</th>";
+            echo "<th>Status</th>";
+            echo "<th>Action</th>";
+            echo "</tr></thead>";
+            echo "<tbody>";
 
-        while ($row = $result->fetch_assoc()) {
-            
-            echo "<tr>";
-            echo "<td data-label='Order ID'><span class='order-id'>" . htmlspecialchars($row['accountID']) . "</span></td>";
-            echo "<td data-label='Name'>" . htmlspecialchars($row['name']) . "</td>";
-            echo "<td data-label='Total Cost'><strong>" . htmlspecialchars($row['email']) . " </strong></td>";
-            echo "<td data-label='Order Date'>".date('M j, Y', strtotime($row['registerDate'])) . "</td>";
-            echo "<td data-label='Order Date'>".date('M j, Y', strtotime($row['birthday'])) . "</td>";
-            echo "<td data-label='Action'><a href='specific_user.php?userID=" . urlencode($row['accountID']) . "' class='btn-view'>View</a></td>";
-            echo "</tr>";
+            while ($row = $result->fetch_assoc()) {
+                $statusClass = 'status-new';
+                $statusText = 'New Order';
+                
+                echo "<tr>";
+                echo "<td data-label='Order ID'><span class='order-id'>" . htmlspecialchars($row['orderID']) . "</span></td>";
+                echo "<td data-label='Name'>" . htmlspecialchars($row['name']) . "</td>";
+                echo "<td data-label='Total Cost'><strong>" . number_format($row['totalCost']) . " MMK</strong></td>";
+                echo "<td data-label='Order Date'>" . date('M j, Y', strtotime($row['orderDate'])) . "</td>";
+                echo "<td data-label='Status'><span class='status-badge $statusClass'>$statusText</span></td>";
+                echo "<td data-label='Action'><a href='specific_order.php?orderID=" . urlencode($row['orderID']) . "' class='btn-view'>View</a></td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table>";
+        } else {
+            echo "<div class='no-orders'>No active orders at the moment.</div>";
         }
-        echo "</tbody></table>";
-    } else {
-        echo "<div class='no-orders'>No User accounts at the moment.</div>";
-    }
 
-    echo "</div>"; // .main-content
-    }
-
-        
+        echo "</div>"; // .main-content
+        }
     ?>
 </body>
 </html>

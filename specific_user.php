@@ -10,9 +10,9 @@ include './layout/login_error_message.php';
 $currentPage = "specific_user.php";
 include './logInCheck.php'; 
 
-$userID = $_SESSION['accountID'];
+$userID = $_GET['userID'];
 
-$query = "SELECT * FROM account JOIN photo ON account.profile = photo.photoID WHERE account.roleID = 2 and account.accountID = $userID";
+$query = "SELECT * FROM account JOIN photo ON account.profile = photo.photoID WHERE account.roleID = 1 and account.accountID = $userID";
 $result = $conn->query($query);
 
 ?>
@@ -230,32 +230,6 @@ body {
     border-radius: 0;
 }
 
-/* Edit button container */
-.edit-button-container {
-    margin-top: 20px;
-    text-align: left;
-}
-
-/* Edit button */
-.btn-edit {
-    background-color: #00693E;
-    color: #ffffff;
-    padding: 12px 30px;
-    text-decoration: none;
-    border-radius: 0;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top : 40px;
-}
-
-.btn-edit:hover {
-    background-color: #004d2b;
-    transform: translateY(-3px);
-    color : #ffffff !important;
-}
-
 /* Responsive adjustments */
 @media (max-width: 1024px) {
     .profile-container {
@@ -294,7 +268,7 @@ body {
         $login = $_SESSION['login'] ?? false;  
         if($login == true) {
         echo "<div class='main-content'>";
-        echo "<h1 class='page-title'>Admin Profile</h1>";
+        echo "<h1 class='page-title'>User Profile</h1>";
 
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -308,7 +282,7 @@ body {
                 echo "<section class='info-section'>";
                 echo "<h3 class='section-title'>Personal Details</h3>";
                 echo "<div class='info-grid'>";
-                echo "<div class='info-item'><span class='label'>Admin ID</span><span class='value'>".$row['accountID']."</span></div>";
+                echo "<div class='info-item'><span class='label'>User ID</span><span class='value'>".$row['accountID']."</span></div>";
                 echo "<div class='info-item'><span class='label'>Registration Date</span><span class='value'>".$row['registerDate']."</span></div>";
                 echo "<div class='info-item'><span class='label'>Email</span><span class='value'>".$row['email']."</span></div>";
                 echo "<div class='info-item'><span class='label'>Birthday</span><span class='value'>".$row['birthday']."</span></div>";
@@ -340,9 +314,6 @@ body {
                 } else {
                     echo "<p class='no-info'>No address information available.</p>";
                 }
-                echo "<div class='edit-button-container'>";
-                echo "<a href='edit_admin_profile.php?userID=".$row['accountID']."' class='btn btn-edit'>Edit Profile</a>";
-                echo "</div>";
                 echo "</section>";
 
                 echo "<section class='order-section'>";

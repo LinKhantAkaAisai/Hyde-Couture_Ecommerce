@@ -20,7 +20,6 @@ if ($filter === 'this_week') {
     $whereDate = " AND YEAR(orderr.orderDate) = YEAR(CURDATE()) AND MONTH(orderr.orderDate) = MONTH(CURDATE())";
 }
 
-
 $query = "SELECT * FROM orderr JOIN account ON orderr.accountID = account.accountID WHERE orderr.orderStatus = 1 $whereDate ORDER BY orderr.orderDate DESC";
 $result = $conn->query($query);
 
@@ -394,7 +393,7 @@ if ($export === 'csv') {
                 echo "<td data-label='Order ID'><span class='order-id'>" . htmlspecialchars($row['orderID']) . "</span></td>";
                 echo "<td data-label='Name'>" . htmlspecialchars($row['name']) . "</td>";
                 echo "<td data-label='Total Cost'><strong>" . number_format($row['totalCost']) . " MMK</strong></td>";
-                echo "<td data-label='Order Date'>" . date('M j, Y h:i A', strtotime($row['orderDate'])) . "</td>";
+                echo "<td data-label='Order Date'>" . date('M j, Y', strtotime($row['orderDate'])) . "</td>";
                 echo "<td data-label='Status'><span class='status-badge $statusClass'>$statusText</span></td>";
                 echo "<td data-label='Action'><a href='specific_order.php?orderID=" . urlencode($row['orderID']) . "' class='btn-view'>View</a></td>";
                 echo "</tr>";

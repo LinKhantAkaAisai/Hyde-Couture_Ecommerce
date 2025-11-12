@@ -7,8 +7,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 include './layout/login_error_message.php';
-$currentPage = "product.php";
-include './logInCheck.php'; 
+$currentPage = "specific_product.php";
+include './logInCheck.php';
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
