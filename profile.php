@@ -6,14 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+
 include './layout/login_error_message.php';
-$currentPage = "specific_user.php";
+$currentPage = "profile.php";
 include './logInCheck.php'; 
 
-$userID = $_SESSION['accountID'];
 
-$query = "SELECT * FROM account JOIN photo ON account.profile = photo.photoID WHERE account.roleID = 2 and account.accountID = $userID";
-$result = $conn->query($query);
 
 ?>
 <!DOCTYPE html>
@@ -293,6 +291,12 @@ body {
         include "nav.php";
         $login = $_SESSION['login'] ?? false;  
         if($login == true) {
+
+        $userID = $_SESSION['accountID'];
+
+        $query = "SELECT * FROM account JOIN photo ON account.profile = photo.photoID WHERE account.roleID = 2 and account.accountID = $userID";
+        $result = $conn->query($query);
+
         echo "<div class='main-content'>";
         echo "<h1 class='page-title'>Admin Profile</h1>";
 
@@ -317,7 +321,8 @@ body {
                 echo "</div>";
                 echo "</section>";
 
-                //__________
+                //_________________________________________________
+
                 $query_address = "SELECT * FROM address WHERE address.accountID = ".$row['accountID'];
                 $result_address = $conn->query($query_address);
 

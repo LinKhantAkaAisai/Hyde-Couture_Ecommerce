@@ -468,18 +468,47 @@ $result_items = $conn->query($query_items);
                             echo "<div class='item-detail-row'><span class='item-detail-label'>Order Item ID</span><span class='item-detail-value'>".$row_items['orderItemID']."</span></div>";
                             echo "<div class='item-detail-row'><span class='item-detail-label'>Product ID</span><span class='item-detail-value'>".$row_items['productID']."</span></div>";
                             echo "<div class='item-detail-row'><span class='item-detail-label'>Product Name</span><span class='item-detail-value'>".$row_items['productName']."</span></div>";
-                            echo "<div class='item-detail-row'><span class='item-detail-label'>Product Price</span><span class='item-detail-value'>".$row_items['price']." MMK</span></div>";
+                            echo "<div class='item-detail-row'><span class='item-detail-label'>Price</span><span class='item-detail-value'>".$row_items['price']." MMK / product</span></div>";
 
                             if($row_items['discountedPrice'] != null ){
-
-                            echo "<div class='item-detail-row'><span class='item-detail-label'>Discounted Price</span><span class='item-detail-value'>".$row_items['discountedPrice']." MMK</span></div>";
-
+                                $uncal = $row_items['discountedPrice'];
+                                echo "<div class='item-detail-row'><span class='item-detail-label'>Discounted Price</span><span class='item-detail-value'>".$row_items['discountedPrice']." MMK / product</span></div>";
                             }
                             else{
+                                $uncal = $row_items['price'];
                                 echo "<div class='item-detail-row'><span class='item-detail-label'>Discounted Price</span><span class='item-detail-value'> - </span></div>";
                             }
+                            
+                            $quantity = $row_items['quantity'];
+                            $discount = 0;
 
-                            echo "<div class='item-detail-row'><span class='item-detail-label'>Release Date</span><span class='item-detail-value'>".$row_items['postedDate']."</span></div>";
+                            $query_discount = "SELECT * FROM discount WHERE discount.productID=".$row_items['productID'];
+                            $result_discount = $conn->query($query_discount);
+
+                            if ($result_discount && $result_discount->num_rows > 0) {
+                                while($row_discount = $result_discount ->fetch_assoc()){
+                                    
+                                    if($quantity >= $row_discount['range1'] && $quantity <= $row_discount['range2'] && $row_discount['range2']!=NULL ){
+                                        $discount = $row_discount['percentage'];
+                                        break;
+                                    }
+                                    else if($quantity > $row_discount['range1'] && $row_discount['range2']===NULL){
+                                        $discount = $row_discount['percentage'];
+                                        break;
+                                    }
+                                    
+                                }
+                            }
+
+                            $calculatedPrice = $uncal - ($uncal * $discount/100);
+
+                            echo "<div class='item-detail-row'><span class='item-detail-label'>Quantity</span><span class='item-detail-value'>".$row_items['quantity']."</span></div>";
+                            echo "<div class='item-detail-row'><span class='item-detail-label'>Discount</span><span class='item-detail-value'>".$discount." %</span></div>";
+
+                            echo "<div class='item-detail-row'><span class='item-detail-label'>Original Total</span><span class='item-detail-value'>".$row_items['quantity'] * $uncal." MMK</span></div>";
+
+                            echo "<div class='item-detail-row'><span class='item-detail-label'>Sub Total</span><span class='item-detail-value'>".$row_items['quantity'] * $calculatedPrice." MMK</span></div>";
+
                             echo "<div class='item-detail-row'><span class='item-detail-label'>Size</span><span class='item-detail-value'>".$row_items['sizeName']."</span></div>";
                             echo "<div class='item-detail-row'><span class='item-detail-label'>Color</span><span class='item-detail-value'>".$row_items['colorName']."</span></div>";
                             // echo "<div class='item-detail-row'><span class='item-detail-label'>Color Code</span><span class='item-detail-value'><div style='width:40px; height:40px; background-color:".$row_items['colorCode']."; border-radius : 50%;'></div></span></div>";
