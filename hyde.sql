@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2025 at 03:51 PM
+-- Generation Time: Nov 17, 2025 at 06:42 AM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -114,17 +114,15 @@ INSERT INTO `category` (`categoryID`, `categoryName`, `parentID`) VALUES
 (16, 'Jacket', 2),
 (17, 'Dresses', 2),
 (18, 'Skirts', 2),
-(19, 'Outlet', NULL),
 (20, 'Tops', 1),
 (21, 'Tops', 2),
 (22, 'Unisex', NULL),
 (23, 'Activewear', NULL),
 (24, 'Shirts', 22),
-(25, 'TShirts', 22),
 (26, 'Pants', 22),
 (27, 'Jeans', 22),
 (28, 'Jacket', 22),
-(29, 'Tops', 22);
+(30, 'Tshirts', 22);
 
 -- --------------------------------------------------------
 
@@ -147,7 +145,9 @@ INSERT INTO `color` (`colorID`, `colorName`, `colorCode`) VALUES
 (2, 'WASHED BLACK', '#1A1A1A'),
 (3, 'WASHED NAVY BLUE', '#2D3A4A'),
 (4, 'Onyx Black', '#0F0F0F'),
-(5, 'Graphite', '#3C3F41');
+(5, 'Graphite', '#3C3F41'),
+(6, 'White', '#ffffff'),
+(7, 'Red', '#ff0000');
 
 -- --------------------------------------------------------
 
@@ -229,7 +229,7 @@ CREATE TABLE `orderr` (
 --
 
 INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`, `addressID`) VALUES
-(1, 1, 232500, '2025-11-06', 3, 1, 1, 2, 1, 2),
+(1, 1, 232500, '2025-11-06', 1, 3, 1, 2, 1, 2),
 (2, 1, 2227500, '2025-11-08', 3, 1, 1, 3, 1, 3),
 (3, 1, 407500, '2025-11-05', 2, 1, 3, 4, 2, 4),
 (4, 0, 1973750, '2025-11-10', 2, 2, 1, 4, 2, 4);
@@ -251,7 +251,8 @@ CREATE TABLE `orderstatus` (
 
 INSERT INTO `orderstatus` (`orderStatusID`, `orderStatus`) VALUES
 (1, 'Active Order'),
-(2, 'Completed Order');
+(2, 'Completed Order'),
+(3, 'Failed Order');
 
 -- --------------------------------------------------------
 
@@ -424,9 +425,7 @@ INSERT INTO `productxcategory` (`productxcategoryID`, `productID`, `categoryID`)
 (5, 3, 3),
 (6, 4, 20),
 (7, 4, 21),
-(8, 4, 29),
 (9, 1, 27),
-(10, 2, 25),
 (11, 5, 15),
 (12, 5, 16),
 (13, 5, 28),
@@ -492,7 +491,8 @@ INSERT INTO `size` (`sizeID`, `sizeName`) VALUES
 (4, 'XL'),
 (5, 'XXL'),
 (6, 'XXXL'),
-(7, '4XL');
+(7, '4XL'),
+(8, '5XL');
 
 -- --------------------------------------------------------
 
@@ -518,7 +518,7 @@ INSERT INTO `stock` (`stockID`, `quantity`, `productID`, `sizeID`, `colorID`) VA
 (3, 10, 1, 3, 1),
 (4, 10, 1, 4, 1),
 (5, 10, 1, 5, 1),
-(6, 10, 1, 6, 1),
+(6, 11, 1, 6, 1),
 (7, 10, 2, 4, 1),
 (8, 10, 2, 5, 1),
 (9, 10, 3, 4, 2),
@@ -534,7 +534,7 @@ INSERT INTO `stock` (`stockID`, `quantity`, `productID`, `sizeID`, `colorID`) VA
 (19, 10, 6, 4, 4),
 (20, 10, 6, 4, 5),
 (21, 10, 6, 5, 4),
-(22, 10, 6, 5, 5);
+(23, 10, 6, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -719,19 +719,19 @@ ALTER TABLE `address`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `categoryID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `categoryID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `color`
 --
 ALTER TABLE `color`
-  MODIFY `colorID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `colorID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `discount`
 --
 ALTER TABLE `discount`
-  MODIFY `discountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `discountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `orderitem`
@@ -749,7 +749,7 @@ ALTER TABLE `orderr`
 -- AUTO_INCREMENT for table `orderstatus`
 --
 ALTER TABLE `orderstatus`
-  MODIFY `orderStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `orderStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `paymentslip`
@@ -803,13 +803,13 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `size`
 --
 ALTER TABLE `size`
-  MODIFY `sizeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `sizeID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `stockID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `stockID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `trackingstatus`
