@@ -27,6 +27,9 @@ if (session_status() === PHP_SESSION_NONE) {
             <a class="nav-link text-white" href="completed_order.php"><i class="bi bi-cart-dash me-2"></i>Completed Order</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link text-white" href="failed_order.php"><i class="bi bi-cart-dash me-2"></i>Failed Order</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-white" href="product.php"><i class="bi bi-box-seam me-2"></i>Product</a>
         </li>
         <li class="nav-item">
