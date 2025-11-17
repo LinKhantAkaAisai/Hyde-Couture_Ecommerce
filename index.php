@@ -1,5 +1,5 @@
 <?php
-include 'connectdb.php';
+include '../connection/connectdb.php';
 include '../layout/nav.php';
 
 $category_id = isset($_GET['id']) ? intval($_GET['id']) : 0;

@@ -195,9 +195,9 @@ h1, h2, h3, h4, h5, h6 {
       <p class="item-title">BOXY JACKET : BLACK</p>
       <p class="item-variation">M - BLACK</p>
       <div class="quantity">
-        <button class="decrease">-</button>
+        <button class="decrease" type="none">-</button>
         <span class="qty">1</span>
-        <button class="increase">+</button>
+        <button class="increase" type="none">+</button>
       </div>
     </div>
     

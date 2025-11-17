@@ -191,10 +191,10 @@ body {
 
   <!-- Gallery -->
   <div class="product-gallery">
-    <img src="../image/image.png" class="active" alt="Product Image 1">
-    <img src="../image/image.png" alt="Product Image 2">
-    <img src="../image/image.png" alt="Product Image 3">
-    <img src="../image/image.png" alt="Product Image 4">
+    <img src="../image/big_p4_i1.jpg" class="active" alt="Product Image 1">
+    <img src="../image/big_p4_i2.jpg" alt="Product Image 2">
+    <img src="../image/big_p4_i1.jpg" alt="Product Image 3">
+    <img src="../image/big_p4_i2.jpg" alt="Product Image 4">
   </div>
 
   <!-- Dots below gallery -->
