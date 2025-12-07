@@ -95,7 +95,7 @@ $result_parent_child0_category = $conn->query($query_parent_child0_category);
     #hyde-nav .side-menu.open { left: 0; }
 
     @media (max-width: 575.98px) {
-      #hyde-nav .side-menu { width: 75%; }
+      #hyde-nav .side-menu { width: 100%; }
     }
     @media (min-width: 576px) and (max-width: 991.98px) {
       #hyde-nav .side-menu { width: 40%; }
