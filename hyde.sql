@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2025 at 06:42 AM
+-- Generation Time: Dec 07, 2025 at 06:45 PM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -45,7 +45,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`, `profile`, `registerDate`) VALUES
-(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', 40, '2025-10-01'),
+(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', 42, '2025-10-01'),
 (2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, NULL, 35, '2025-09-18'),
 (3, 'Myat Thiri Khaing', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '09952090401', '2005-02-16', 1, NULL, 36, '2025-11-01'),
 (4, 'Taylor Swift', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '0823059272', '1989-12-13', 1, NULL, 38, '2025-10-30');
@@ -172,6 +172,26 @@ INSERT INTO `discount` (`discountID`, `range1`, `range2`, `percentage`, `product
 (2, 20, 29, 20, 1),
 (3, 10, 19, 10, 2),
 (4, 20, NULL, 30, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `favourite`
+--
+
+CREATE TABLE `favourite` (
+  `favID` int NOT NULL,
+  `accountID` int NOT NULL,
+  `productID` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `favourite`
+--
+
+INSERT INTO `favourite` (`favID`, `accountID`, `productID`) VALUES
+(1, 2, 1),
+(2, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -370,7 +390,9 @@ INSERT INTO `photo` (`photoID`, `photoName`, `productID`) VALUES
 (37, 'minsitt.jpg', NULL),
 (38, 'taylor.jpg', NULL),
 (39, 'hhh.jpg', NULL),
-(40, 'photo_2025-02-12_00-54-12 - Copy.jpg', NULL);
+(40, 'photo_2025-02-12_00-54-12 - Copy.jpg', NULL),
+(41, 'Purple Black Simple Music CD Cover.png', NULL),
+(42, 'photo_2025-02-12_00-54-12 - Copy.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -596,6 +618,14 @@ ALTER TABLE `discount`
   ADD KEY `productID` (`productID`);
 
 --
+-- Indexes for table `favourite`
+--
+ALTER TABLE `favourite`
+  ADD PRIMARY KEY (`favID`),
+  ADD KEY `userID` (`accountID`),
+  ADD KEY `productID` (`productID`);
+
+--
 -- Indexes for table `orderitem`
 --
 ALTER TABLE `orderitem`
@@ -734,6 +764,12 @@ ALTER TABLE `discount`
   MODIFY `discountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `favourite`
+--
+ALTER TABLE `favourite`
+  MODIFY `favID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `orderitem`
 --
 ALTER TABLE `orderitem`
@@ -773,7 +809,7 @@ ALTER TABLE `paymenttype`
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -845,6 +881,13 @@ ALTER TABLE `category`
 --
 ALTER TABLE `discount`
   ADD CONSTRAINT `discount_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `favourite`
+--
+ALTER TABLE `favourite`
+  ADD CONSTRAINT `favourite_ibfk_1` FOREIGN KEY (`accountID`) REFERENCES `account` (`accountID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `favourite_ibfk_2` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `orderitem`
