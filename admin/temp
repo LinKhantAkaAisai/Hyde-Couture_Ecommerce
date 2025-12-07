@@ -1,0 +1,69 @@
+
+echo "<section class='add-section'>";
+
+echo "<h2>Add New Stock</h2>";
+echo "<form method='POST' class='add-form'>";
+
+echo "<div class='form-group product-wide'>";
+echo "<label>Product:</label>";
+echo "<select name='productID' required>";
+while ($row_product = $result_products->fetch_assoc()) {
+    echo "<option value='".$row_product['productID']."'>".$row_product['productName']."</option>";
+}
+mysqli_data_seek($result_products, 0);
+echo "</select>";
+echo "</div>";
+
+echo "<div class='form-group'>";
+echo "<label>Size:</label>";
+echo "<select name='sizeID' required>";
+while ($row_size = $result_sizes->fetch_assoc()) {
+    echo "<option value='".$row_size['sizeID']."'>".$row_size['sizeName']."</option>";
+}
+mysqli_data_seek($result_sizes, 0);
+echo "</select>";
+echo "</div>";
+
+echo "<div class='form-group'>";
+echo "<label>Color:</label>";
+echo "<select name='colorID' required>";
+while ($row_color = $result_colors->fetch_assoc()) {
+    echo "<option value='".$row_color['colorID']."'>".$row_color['colorName']."</option>";
+}
+mysqli_data_seek($result_colors, 0);
+echo "</select>";
+echo "</div>";
+
+echo "<div class='form-group'>";
+echo "<label>Quantity:</label>";
+echo "<input type='number' name='quantity' required>";
+echo "</div>";
+
+echo "<button type='submit' name='add_stock' class='btn-submit'>Add Stock</button>";
+echo "</form>";
+
+echo "<h2>Add New Size</h2>";
+echo "<form method='POST' style='display: flex; gap: 15px; align-items: end; flex-wrap: wrap;'>";
+echo "<div class='form-group' style='flex: 1; min-width: 200px;'>";
+echo "<label>Size Name:</label>";
+echo "<input type='text' name='sizeName' required>";
+echo "</div>";
+echo "<button type='submit' name='add_size' class='btn-submit' style='height: fit-content; padding: 10px 20px; width: auto;'>Add Size</button>";
+echo "</form>";
+
+echo "<br>";
+echo "<h2>Add New Color</h2>";
+echo "<form method='POST' style='display: flex; gap: 15px; align-items: end; flex-wrap: wrap;'>";
+echo "<div class='form-group' style='flex: 1; min-width: 180px;'>";
+echo "<label>Color Name:</label>";
+echo "<input type='text' name='colorName' required>";
+echo "</div>";
+echo "<div class='form-group' style='flex: 0 0 100px;'>";
+echo "<label>Color Code:</label>";
+echo "<input type='color' name='colorCode' required style='width: 100%; height: 42px;'>";
+echo "</div>";
+echo "<button type='submit' name='add_color' class='btn-submit' style='height: fit-content; padding: 10px 20px; width: auto;'>Add Color</button>";
+echo "</form>";
+echo "<br>";
+
+echo "</section>";
