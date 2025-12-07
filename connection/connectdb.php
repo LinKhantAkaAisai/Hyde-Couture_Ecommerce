@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'hyde';
 $username = 'root';
-$password = 'Thanoswasright@1989';
+$password = 'yourpassword';
 
 try {
     $conn = new mysqli($host, $username, $password, $dbname);
@@ -12,4 +12,5 @@ try {
 } catch (Exception $e) {
     die("Database connection failed: " . $e->getMessage());
 }
+
 ?>
