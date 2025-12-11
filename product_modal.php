@@ -164,8 +164,8 @@ $related = $conn->query("
 
             <p><strong>Waiting Week:</strong> <?= $p['waitingWeek'] ?> weeks</p>
             <p><strong>Status:</strong>
-                <span style="color:<?= $p['preorder'] ? '#b8860b' : '#006400' ?>;font-weight:700;">
-                    <?= $p['preorder'] ? 'Pre-Order Only' : 'In Stock' ?>
+                <span style="color:<?= $p['preorder'] ? '006400' : '##b8860b' ?>;font-weight:700;">
+                    <?= $p['preorder'] ? 'Pre-Order Allowed' : 'Pre-Order Not Allowed' ?>
                 </span>
             </p>
 
