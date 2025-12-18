@@ -351,11 +351,11 @@ body {
                 echo "</section>";
 
                 echo "<section class='order-section'>";
-                echo "<h3 class='section-title'>Orders</h3>";
-                echo "<div class='order-buttons'>";
-                echo "<a href='user_active_order.php?userID=".$row['accountID']."' class='btn btn-primary'>Active Orders</a>";
-                echo "<a href='user_completed_order.php?userID=".$row['accountID']."' class='btn btn-secondary'>Completed Orders</a>";
-                echo "</div>";
+                // echo "<h3 class='section-title'>Orders</h3>";
+                // echo "<div class='order-buttons'>";
+                // echo "<a href='user_active_order.php?userID=".$row['accountID']."' class='btn btn-primary'>Active Orders</a>";
+                // echo "<a href='user_completed_order.php?userID=".$row['accountID']."' class='btn btn-secondary'>Completed Orders</a>";
+                // echo "</div>";
                 echo "</section>";
                 echo "</div>";
                 echo "</div>";

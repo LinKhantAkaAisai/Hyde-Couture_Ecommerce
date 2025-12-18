@@ -1,72 +1,69 @@
-<?php 
 
-include "../connection/connectdb.php";
+echo "<section class='add-section'>";
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+echo "<h2>Add New Stock</h2>";
+echo "<form method='POST' class='add-form'>";
+
+echo "<div class='form-group product-wide'>";
+echo "<label>Product:</label>";
+echo "<select name='productID' required>";
+while ($row_product = $result_products->fetch_assoc()) {
+    echo "<option value='".$row_product['productID']."'>".$row_product['productName']."</option>";
 }
+mysqli_data_seek($result_products, 0);
+echo "</select>";
+echo "</div>";
 
-include './layout/login_error_message.php';
-$currentPage = "specific_user.php";
-include './logInCheck.php'; 
+echo "<div class='form-group'>";
+echo "<label>Size:</label>";
+echo "<select name='sizeID' required>";
+while ($row_size = $result_sizes->fetch_assoc()) {
+    echo "<option value='".$row_size['sizeID']."'>".$row_size['sizeName']."</option>";
+}
+mysqli_data_seek($result_sizes, 0);
+echo "</select>";
+echo "</div>";
 
-$userID = $_GET['userID'];
+echo "<div class='form-group'>";
+echo "<label>Color:</label>";
+echo "<select name='colorID' required>";
+while ($row_color = $result_colors->fetch_assoc()) {
+    echo "<option value='".$row_color['colorID']."'>".$row_color['colorName']."</option>";
+}
+mysqli_data_seek($result_colors, 0);
+echo "</select>";
+echo "</div>";
 
-$query = "SELECT * FROM account JOIN photo ON account.profile = photo.photoID WHERE account.roleID = 1 and account.accountID = $userID";
-$result = $conn->query($query);
+echo "<div class='form-group'>";
+echo "<label>Quantity:</label>";
+echo "<input type='number' name='quantity' required>";
+echo "</div>";
 
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
-    <?php include "./layout/header.php"; ?>
-</head>
-<body>
-    <?php
-        include "nav.php";
-        $login = $_SESSION['login'] ?? false;  
-        if($login == true) {
-        echo "<div class='main-content'>";
-        echo "<h1>User Profile</h1>";
+echo "<button type='submit' name='add_stock' class='btn-submit'>Add Stock</button>";
+echo "</form>";
 
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "Profile : <image src='../image/".$row['photoName']."' width='200px'></image><br>";
-                echo "user ID : ".$row['accountID']."<br>";
-                echo "name : ".$row['name']."<br>";
-                echo "registration Date : ".$row['registerDate']."<br>";
-                echo "email : ".$row['email']."<br>";
-                echo "birthday : ".$row['birthday']."<br>";
-                echo "phone Number : ".$row['phoneNumber']."<br>";
-                echo "Profile : ".$row['photoName']."<br>";
+echo "<h2>Add New Size</h2>";
+echo "<form method='POST' style='display: flex; gap: 15px; align-items: end; flex-wrap: wrap;'>";
+echo "<div class='form-group' style='flex: 1; min-width: 200px;'>";
+echo "<label>Size Name:</label>";
+echo "<input type='text' name='sizeName' required>";
+echo "</div>";
+echo "<button type='submit' name='add_size' class='btn-submit' style='height: fit-content; padding: 10px 20px; width: auto;'>Add Size</button>";
+echo "</form>";
 
-                //__________
-                $query_address = "SELECT * FROM address WHERE address.accountID = ".$row['accountID'];
-                $result_address = $conn->query($query_address);
+echo "<br>";
+echo "<h2>Add New Color</h2>";
+echo "<form method='POST' style='display: flex; gap: 15px; align-items: end; flex-wrap: wrap;'>";
+echo "<div class='form-group' style='flex: 1; min-width: 180px;'>";
+echo "<label>Color Name:</label>";
+echo "<input type='text' name='colorName' required>";
+echo "</div>";
+echo "<div class='form-group' style='flex: 0 0 100px;'>";
+echo "<label>Color Code:</label>";
+echo "<input type='color' name='colorCode' required style='width: 100%; height: 42px;'>";
+echo "</div>";
+echo "<button type='submit' name='add_color' class='btn-submit' style='height: fit-content; padding: 10px 20px; width: auto;'>Add Color</button>";
+echo "</form>";
+echo "<br>";
 
-                if ($result_address && $result_address->num_rows > 0) {
-                    while ($row_address = $result_address->fetch_assoc()) {
-                        echo "street : ".$row_address['street']."<br>";
-                        echo "township : ".$row_address['township']."<br>";
-                        echo "city : ".$row_address['city']."<br>";
-                        echo "state : ".$row_address['state']."<br>";
-                        echo "postal Code : ".$row_address['country']."<br>";
-                        echo "map Link : ".$row_address['completeAddress']."<br>";
-                        echo "map link : ".$row_address['mapLink']."<br>"; //wil show if it is not null
-                    }
-                }
-
-                echo "<a href='user_active_order.php?userID=".$row['accountID']."'>See Active Orders</a><br>";
-                echo "<a href='user_completed_order.php?userID=".$row['accountID']."'>See Completed Orders</a><br>";
-
-            }
-        }
-
-        echo "</div>";
-        }
-    ?>
-</body>
-</html>
+echo "</section>";
