@@ -1,5 +1,6 @@
 <?php
 include '../connection/connectdb.php';
+$currentPage = 'register.php';
 include '../layout/nav.php';
 ?>
 
@@ -11,20 +12,29 @@ include '../layout/nav.php';
     <title>User Registration</title>
     <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN' crossorigin='anonymous'>
     <link href='https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Sancreek&family=Vollkorn:ital,wght@0,400;0,700;1,400&display=swap' rel='stylesheet'>
-    
     <style>
-        /* Custom CSS for Register Page */
 
-        /* --- Font Definitions --- */
-        .register_brand-name {
-            font-family: 'Sancreek', cursive;
-            font-size: 3rem; /* Adjust as needed */
-            color: #fff; /* Assuming the brand name is visible over the background image */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
         }
+
+        body {
+            background: none;
+            background-color: #ffffff;
+        }
+
+        .register-container {
+            background-image: none;
+        }
+
         .register_heading-font {
             font-family: 'Cinzel', serif;
             font-weight: 700;
+            font-size : 15px;
         }
+        
         .register_text-font,
         .form-control,
         .form-select,
@@ -33,14 +43,11 @@ include '../layout/nav.php';
             font-family: 'Vollkorn', serif;
         }
 
-        /* --- Color Definitions --- */
-        /* Rolex Green (Approximate deep green tone) */
         .register_rolex-green-bg {
-            background-color: #004D40 !important; 
+            background-color: #005A2B !important; 
         }
-        /* register-btn already prefixed in original; keep it */
+
         .register-btn {
-            /* Using the gradient from the provided image */
             background: linear-gradient(to right, #003c1f, #00c167);
             border: none;
             color: white;
@@ -52,141 +59,172 @@ include '../layout/nav.php';
             color: white;
         }
         .register_login-link {
-            color: #004D40; /* Match the green theme */
+            color: #004D40;
             font-weight: 600;
         }
 
-        /* --- Layout and Background --- */
-        /* Placeholder for your background image, using a dark background for contrast */
         .register_registration-container {
-            background: url('image_9ec7ca.png') no-repeat center center fixed; /* Use the provided image or a similar professional background */
             background-size: cover;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; 
             align-items: center;
-            padding: 20px;
+            padding: 0px 0px 0px 0px;
+            margin : 0px 0px 0px 0px;
+            width : 100% !important;
         }
         .register_form-box {
             background: white;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 800px; /* Max width for large screens */
+            border-radius: 0px;
+            width: 100% !important;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
         }
         
-        /* Adjustments for inputs to match the image's minimal styling */
         .form-control, .form-select {
-            border-radius: 5px;
+            border-radius: 0px;
             padding: 10px 15px;
             font-size: 0.95rem;
             height: auto; 
         }
-        /* keep .form-group (bootstrap) selector as-is so hiding labels still works */
         .form-group label {
-            /* Visually hiding the labels to match the image where the placeholder acts as the label */
             display: none;
         }
         .form-group {
             margin-bottom: 0.5rem; 
         }
 
-        /* Mobile adjustments (less than 768px) */
-        @media (max-width: 767.98px) {
-            .register_brand-name {
-                font-size: 2rem;
+ 
+        
+        .register_form-box {
+            max-width: 100% !important; 
+            width: 100% !important; 
+        }
+
+
+        @media (min-width: 768px) {
+            .register_registration-container {
+                justify-content: flex-start; 
+                padding-top: 0px;
+                padding-bottom: 0px;
+                padding-left: 30px; 
+                padding-right: 30px;
             }
+
             .register_form-box {
-                max-width: 95%;
+                max-width: 100%; 
+                width: 100%; 
             }
-            .form-control, .form-select {
-                padding: 8px 10px;
+
+            .form-group {
+                margin-bottom: 0.8rem;
             }
         }
+
+        @media (min-width: 1200px) {
+            .register_form-box {
+                max-width: 1200px; 
+                width: 100%;
+            }
+            
+        }
+
     </style>
 </head>
 <body>
+<div class="register_registration-container container-fluid p-0 d-flex">
 
-    <div class='register_registration-container'>
-        <h1 class='register_brand-name text-center py-3'>Brand Name</h1> 
-        <div class='container d-flex justify-content-center align-items-center py-5'>
-            <div class='register_form-box shadow-lg' id='signup-box'>
-                <div class='register_header-compartment register_rolex-green-bg text-white py-3 mb-4 rounded-top'>
-                    <h2 class='text-center register_heading-font m-0'>Register</h2>
-                </div>
+    <div class='register_form-box shadow-lg' id='signup-box'>
+            
+            <div class='register_header-compartment register_rolex-green-bg text-white py-3 mb-4'>
+                <h4 class='text-center register_heading-font m-0'>Register</h4>
+            </div>
                 
-                <form id='signup-form' class='px-4 pb-4'>
-                    <div class='row g-3'>
-                        
+            <form id='signup-form' class='px-4 pb-4' action="./register_action.php" method="POST" enctype="multipart/form-data">
+                <div class='row g-3'>
+
+                    <div class='col-12 col-md-6 form-group'>
+                        <label class='form-label register_text-font' for='profile'>Profile</label>
+                        <input type='file' class='form-control register_text-font' id='profile' placeholder='Choose your profile photo' required name="profile" accept='*'>
+                    </div>
+
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='signup-name'>Full Name</label>
-                            <input type='text' class='form-control register_text-font' id='signup-name' placeholder='Enter your name' required>
+                            <input type='text' class='form-control register_text-font' id='signup-name' placeholder='Enter your name' required name="name">
                         </div>
                         
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='signup-email'>Email</label>
-                            <input type='email' class='form-control register_text-font' id='signup-email' placeholder='Email' required>
+                            <input type='email' class='form-control register_text-font' id='signup-email' placeholder='Email' required name="email">
                         </div>
 
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='signup-birthday'>Birthday</label>
-                            <input type='date' class='form-control register_text-font' id='signup-birthday' placeholder='mm/dd/yy' required>
+                            <input type='date' class='form-control register_text-font' id='signup-birthday' placeholder='mm/dd/yy' required name="birthday">
+                        </div>
+
+                        <div class='col-12 col-md-6 form-group'>
+                            <label class='form-label register_text-font' for='phone'>Phone Number</label>
+                            <input type='text' class='form-control register_text-font' id='phone' placeholder='Enter your phone number' required name="phoneNumber">
                         </div>
                         
                         <div class='col-12 col-md-6 form-group'>
-                            <label class='form-label register_text-font' for='signup-password'>Password</label>
-                            <input type='password' class='form-control register_text-font' id='signup-password' placeholder='Enter your passcode' required>
+                            <label class='form-label register_text-font' for='signup-password'>Passcode</label>
+                            <input type='password' class='form-control register_text-font' id='signup-password' placeholder='Enter your passcode' required name="passcode">
                         </div>
                         
+                        <div class='col-12 col-md-6 form-group'>
+                            <label class='form-label register_text-font' for='signup-password'>Passcode Again</label>
+                            <input type='password' class='form-control register_text-font' id='signup-password' placeholder='Confirm passcode' required name="confirmPasscode">
+                        </div>
+
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='country'>Country</label>
-                            <select class='form-select register_text-font' id='country' required>
+                            <select class='form-select register_text-font' id='country' required name="country">
                                 <option value=''>choose your country</option>
                             </select>
                         </div>
                         
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='street'>Street</label>
-                            <input type='text' class='form-control register_text-font' id='street' placeholder='Enter your street' required>
+                            <input type='text' class='form-control register_text-font' id='street' placeholder='Enter your street' required name="street">
                         </div>
                         
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='city'>City</label>
-                            <select class='form-select register_text-font' id='city' required>
+                            <select class='form-select register_text-font' id='city' required name="city">
                                 <option value=''>Choose your city</option>
                             </select>
                         </div>
                         
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='township'>Township</label>
-                            <input type='text' class='form-control register_text-font' id='township' placeholder='Enter your township' required>
+                            <input type='text' class='form-control register_text-font' id='township' placeholder='Enter your township' required name="township">
                         </div>
-                        
+
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='state'>State</label>
-                            <input type='text' class='form-control register_text-font' id='state' placeholder='Enter your state' required>
+                            <input type='text' class='form-control register_text-font' id='state' placeholder='Enter your state' required name="state">
                         </div>
                         
                         <div class='col-12 col-md-6 form-group'>
                             <label class='form-label register_text-font' for='postal'>Postal Code</label>
-                            <input type='text' class='form-control register_text-font' id='postal' placeholder='Enter your postal code' required>
+                            <input type='text' class='form-control register_text-font' id='postal' placeholder='Enter your postal code' required name="postalCode">
                         </div>
                         
                         <div class='col-12 form-group'>
                             <label class='form-label register_text-font' for='complete_address'>Complete Address</label>
-                            <textarea class='form-control register_text-font' id='complete_address' rows='3' placeholder='Enter the complete address' required></textarea>
+                            <textarea class='form-control register_text-font' id='complete_address' rows='3' placeholder='Enter the complete address' required name="completeAddress"></textarea>
                         </div>
                         
                         <div class='col-12 form-group'>
                             <label class='form-label register_text-font' for='google_link'>Google Map Link</label>
-                            <input type='text' class='form-control register_text-font' id='google_link' placeholder='Enter the map link' required>
+                            <input type='text' class='form-control register_text-font' id='google_link' placeholder='Enter the map link  (Optional)' name="mapLink">
                         </div>
                         
                     </div>
 
                     <div class='form-check mt-3 mb-4 d-flex align-items-start'>
-                        <input class='form-check-input me-2' type='checkbox' value='' id='terms-check' required>
+                        <input class='form-check-input me-2' type='checkbox' value='' id='terms-check' required name="termAccept">
                         <label class='form-check-label register_text-font small' for='terms-check'>
                             I have read and agree to the Website's Terms & Conditions and Privacy Policy.
                         </label>
@@ -197,11 +235,11 @@ include '../layout/nav.php';
                     </div>
 
                     <p class='text-center mt-3 register_text-font'>
-                        Already a member? <a href='#' class='register_login-link text-decoration-none'>Login</a>
+                        Already a member? <a href='./login.php' class='register_login-link text-decoration-none'>Login</a>
                     </p>
                 </form>
-            </div>
         </div>
+        
     </div>
     
     <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL' crossorigin='anonymous'></script>

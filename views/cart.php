@@ -1,3 +1,7 @@
+<?php 
+  include '../layout/nav.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,33 +9,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shopping Cart | HYDE COUTURE</title>
 
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600&family=Cinzel:wght@400;700&family=Sancreek&display=swap" rel="stylesheet">
 
-<!-- Icons (using Font Awesome CDN) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
-/* Font assignments */
 body {
   margin: 0;
-  font-family: 'Vollkorn', serif; /* default for texts/paragraphs */
+  font-family: 'Vollkorn', serif;
   background-color: #fff;
   color: #111;
 }
 
-.brand-name {
-  font-family: 'Sancreek', cursive;
-  font-size: 2rem;
-  font-weight: normal;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cinzel', serif;
-  margin: 0;
-}
-
-/* Cart container */
 .cart-container {
   max-width: 900px;
   margin: 2rem auto;
@@ -40,10 +27,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .cart-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
   border-bottom: 1px solid #ddd;
+}
+
+.cart-item input[type="checkbox"] {
+  margin-top: 40px;
 }
 
 .cart-item img {
@@ -58,35 +49,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .item-title {
-  font-family: 'Cinzel', serif; /* headings for product titles */
+  font-family: 'Cinzel', serif;
   font-weight: 600;
   font-size: 1rem;
   margin: 0;
 }
 
 .item-variation {
-  font-family: 'Vollkorn', serif; /* paragraph text */
   font-size: 0.9rem;
   color: #555;
   margin-top: 2px;
 }
 
-.item-actions {
+.item-stock {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.quantity-row {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.item-actions i {
-  cursor: pointer;
-  font-size: 1.1rem;
-  color: #111;
-  transition: color 0.3s;
-}
-
-.item-actions i:hover {
-  color: var(--rolex-green, #005A2B);
+  gap: 1.5rem;
+  margin-top: 12px;
 }
 
 .quantity {
@@ -103,26 +88,63 @@ h1, h2, h3, h4, h5, h6 {
   background: #fff;
   cursor: pointer;
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Delete Icon Style */
+.remove-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s, transform 0.1s;
+}
+
+.remove-btn:hover {
+  color: #e74c3c;
+  transform: scale(1.1);
+}
+
+.remove-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .item-price {
-  width: 80px;
+  width: 100px;
   text-align: right;
   font-weight: 600;
-  font-family: 'Cinzel', serif; /* price as heading style */
+  font-family: 'Cinzel', serif;
 }
 
-/* Subtotal and Buttons */
+.item-price .old-price {
+  text-decoration: line-through;
+  color: #888;
+  font-weight: 400;
+  font-size: 0.9rem;
+  display: block;
+}
+
+/* Cart Summary */
 .cart-summary {
   margin-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  font-size: 1.1rem;
-  font-family: 'Cinzel', serif; /* heading style */
+  font-family: 'Cinzel', serif;
 }
 
+.cart-summary div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Buttons */
 .cart-buttons {
   margin-top: 1rem;
   display: flex;
@@ -130,16 +152,19 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.7rem;
 }
 
-.checkout-btn {
-  background-color: #005A2B; /* Rolex green */
-  color: #fff;
-  border: none;
+.checkout-btn, .continue-btn {
   padding: 12px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: opacity 0.3s;
   font-family: 'Cinzel', serif;
+  border: none;
+  border-radius: 6px;
+}
+
+.checkout-btn {
+  background: linear-gradient(to right, #005A2B, #008A4B);
+  color: #fff;
 }
 
 .checkout-btn:hover {
@@ -148,14 +173,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .continue-btn {
   background-color: #fff;
-  border: 2px solid #005A2B; /* Rolex green border */
+  border: 2px solid #005A2B;
   color: #005A2B;
-  padding: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: opacity 0.3s, background-color 0.3s;
-  font-family: 'Cinzel', serif;
 }
 
 .continue-btn:hover {
@@ -164,15 +183,10 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.85;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .cart-item {
     flex-direction: column;
     align-items: flex-start;
-  }
-  .item-actions {
-    flex-direction: row;
-    gap: 1rem;
   }
   .item-price {
     width: 100%;
@@ -183,81 +197,127 @@ h1, h2, h3, h4, h5, h6 {
 </style>
 </head>
 <body>
-<?php include "../layout/nav.php"; ?>
 
-<form method="post" action="./checkout.php">
 <div class="cart-container">
 
-  <!-- Item -->
   <div class="cart-item">
-    <img src="../image/p4_i1.jpg" alt="Boxy Jacket">
+    <input type="checkbox">
+    <img src="https://via.placeholder.com/120x150" alt="Vervesv Tee">
     <div class="item-details">
-      <p class="item-title">BOXY JACKET : BLACK</p>
-      <p class="item-variation">M - BLACK</p>
-      <div class="quantity">
-        <button class="decrease" type="none">-</button>
-        <span class="qty">1</span>
-        <button class="increase" type="none">+</button>
+      <p class="item-title">VERVESV OG CLASSIC LOGO TEE</p>
+      <p class="item-variation">color : Blue</p>
+      <p class="item-variation">size : M</p>
+      <p class="item-stock">This item is out of stock.</p>
+      <div class="quantity-row">
+        <div class="quantity">
+          <button class="decrease">-</button>
+          <span class="qty">2</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="remove-btn" title="Remove item">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+        </button>
       </div>
     </div>
-    
-    <div class="item-actions">
-      <i class="fa-regular fa-heart"></i>
-      <i class="fa-regular fa-trash-can"></i>
+    <div class="item-price">
+      <span class="old-price">$1.99</span>
+      <span class="current-price">$1</span>
     </div>
-    <div class="item-price">123 USD</div>
+  </div>
+
+  <div class="cart-item">
+    <input type="checkbox">
+    <img src="https://via.placeholder.com/120x150" alt="Vervesv Tee">
+    <div class="item-details">
+      <p class="item-title">VERVESV OG CLASSIC LOGO TEE</p>
+      <p class="item-variation">color : Blue</p>
+      <p class="item-variation">size : M</p>
+      <p class="item-stock">You can preorder this item</p>
+      <div class="quantity-row">
+        <div class="quantity">
+          <button class="decrease">-</button>
+          <span class="qty">13</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="remove-btn" title="Remove item">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="item-price">
+      <span class="old-price">$13</span>
+      <span class="current-price">$10</span>
+    </div>
   </div>
 
   <div class="cart-summary">
-    <span>SUBTOTAL</span>
-    <span id="subtotal">123 USD</span>
+    <div><span>Subtotal</span><span id="subtotal">$0</span></div>
+    <div><span>Shipping</span><span>$3</span></div>
+    <div><span>Total</span><span id="total">$0</span></div>
   </div>
 
   <div class="cart-buttons">
-    <button class="checkout-btn" type="submit">CHECK OUT</button>
-    <button class="continue-btn"><a href="./index.php">CONTINUE SHOPPING</a></button>
+    <button class="checkout-btn">CHECK OUT</button>
+    <button class="continue-btn">CONTINUE SHOPPING</button>
   </div>
 
 </div>
-</form>
 
 <script>
-
-const decreaseBtns = document.querySelectorAll('.decrease');
-const increaseBtns = document.querySelectorAll('.increase');
-const qtySpans = document.querySelectorAll('.qty');
-const itemPrices = document.querySelectorAll('.item-price');
+const cartContainer = document.querySelector('.cart-container');
 const subtotalSpan = document.getElementById('subtotal');
+const totalSpan = document.getElementById('total');
 
-decreaseBtns.forEach((btn, index) => {
-  btn.addEventListener('click', () => {
-    let qty = parseInt(qtySpans[index].textContent);
-    if (qty > 1) qty--;
-    qtySpans[index].textContent = qty;
-    updateSubtotal();
-  });
-});
+cartContainer.addEventListener('click', (e) => {
+  // Check if click was on the remove button or its SVG/path children
+  const removeBtn = e.target.closest('.remove-btn');
+  const item = e.target.closest('.cart-item');
+  
+  if (!item) return;
 
-increaseBtns.forEach((btn, index) => {
-  btn.addEventListener('click', () => {
-    let qty = parseInt(qtySpans[index].textContent);
+  const qtySpan = item.querySelector('.qty');
+  let qty = parseInt(qtySpan.textContent);
+
+  if (e.target.classList.contains('decrease')) {
+    if (qty > 1) {
+      qty--;
+      qtySpan.textContent = qty;
+    }
+  } else if (e.target.classList.contains('increase')) {
     qty++;
-    qtySpans[index].textContent = qty;
-    updateSubtotal();
-  });
+    qtySpan.textContent = qty;
+  } else if (removeBtn) {
+    item.remove();
+  }
+
+  updateTotals();
 });
 
-function updateSubtotal() {
-  let total = 0;
-  itemPrices.forEach((priceEl, index) => {
-    const price = parseFloat(priceEl.textContent);
-    const qty = parseInt(qtySpans[index].textContent);
-    total += price * qty;
+function updateTotals() {
+  const items = document.querySelectorAll('.cart-item');
+  let subtotal = 0;
+
+  items.forEach((item) => {
+    const priceText = item.querySelector('.current-price').textContent.replace('$', '');
+    const price = parseFloat(priceText);
+    const qty = parseInt(item.querySelector('.qty').textContent);
+    subtotal += price * qty;
   });
-  subtotalSpan.textContent = total + ' USD';
+
+  subtotalSpan.textContent = '$' + subtotal.toFixed(2);
+  const shipping = items.length > 0 ? 3 : 0;
+  totalSpan.textContent = '$' + (subtotal + shipping).toFixed(2);
 }
+
+updateTotals();
 </script>
 
-<?php include "../layout/footer.php"; ?>
 </body>
 </html>
+<?php
+  include '../layout/footer.php';
+?>
