@@ -1,7 +1,7 @@
 <?php
   include '../connection/connectdb.php';
   include '../layout/nav.php';
-  $userID = isset($_GET['userID']) ? intval($_GET['userID']) : 4;
+  $userID = isset($_GET['userID']) ? intval($_GET['userID']) : 1;
 
   $query = "SELECT * FROM orderr JOIN account ON orderr.accountID = account.accountID JOIN orderStatus ON orderr.orderStatus = orderStatus.orderStatusID WHERE orderr.accountID = $userID ORDER BY orderr.orderDate DESC";
   $result = $conn->query($query);

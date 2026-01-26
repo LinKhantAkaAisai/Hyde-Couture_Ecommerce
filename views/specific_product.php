@@ -1,16 +1,3 @@
-<?php
-include '../connection/connectdb.php';
-include '../layout/nav.php';
-
-if(isset($_GET['productID'])){
-  $productID = $_GET['productID'];
-  echo $productID;
-
-  $query = "SELECT * FROM product JOIN stock ON product.productID = stock.productID";
-
-}
-
-?>
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -65,6 +52,7 @@ if(isset($_GET['productID'])){
     border-radius: 10px;
 }
 
+/* Responsive heights */
 @media(max-width: 1024px) {
     .specific_product_carousel-inner { height: 750px; }
 }
@@ -267,7 +255,7 @@ const specific_product_data = {
     oldPrice: '$19.99',
     newPrice: '$1',
     description: 'Elevate your casual wardrobe with the Hyde Couture Men\'s VERVESV OG CLASSIC LOGO TEE, featuring premium cotton and a timeless design...',
-    images: ['../image/p1_i1.jpg','../image/p1_i2.jpg','../image/p1_i3.jpg','../image/p1_i4.jpg'],
+    images: ['p1_i1.jpg','p1_i2.jpg','p1_i3.jpg','p1_i4.jpg'],
     variants: [
         { colorName:'White', colorCode:'#ffffff', sizes:{'S':0,'M':12,'L':8,'XL':0} },
         { colorName:'Black', colorCode:'#000000', sizes:{'S':10,'M':5,'L':15,'XL':2} },
@@ -287,7 +275,7 @@ window.addEventListener('load', ()=>{
     specific_product_updateDisplay(specific_product_currentVariant);
 });
 
-
+/* ---------------- CORE UPDATE ---------------- */
 function specific_product_updateDisplay(variant){
     specific_product_currentVariant = variant;
 
@@ -300,10 +288,12 @@ function specific_product_updateDisplay(variant){
     specific_product_setupCarousel();
 }
 
+/* ---------------- GENERATION ---------------- */
 function specific_product_loadImages(imageArray){
     const cont = document.getElementById('specific_product_carouselImages');
     const dots = document.getElementById('specific_product_carouselDots');
 
+    // smooth fade
     cont.style.opacity = 0;
     setTimeout(()=>{
         cont.innerHTML = '';
@@ -405,6 +395,3 @@ function specific_product_setupCarousel(){
 
 </body>
 </html>
-<?php
-    include '../layout/footer.php';
-?>

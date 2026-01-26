@@ -6,11 +6,7 @@
     <title>Order and Payment Submission</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* =====================================
-   CHECKOUT PAGE FIX (NO GLOBAL STYLES)
-===================================== */
 
-/* Disable root variables outside checkout */
 .checkout-page {
     --color-primary-dark: #0f4f1d;
     --color-accent-green: #e5f6e5;
@@ -245,7 +241,15 @@
             background: var(--color-border-green);
             transform: translate(-50%, -50%);
         }
+        /* Highlight the selected address card */
+.selected-address {
+    border: 2px solid var(--color-border-green) !important;
+    background-color: var(--color-accent-green) !important;
+}
 
+.selected-address .address-accordion-title {
+    background-color: var(--color-accent-green) !important;
+}
         /* 4. Security Disclaimer */
         .security-disclaimer {
             text-align: center;
@@ -879,7 +883,62 @@
         padding: 0;
     }
 }
+    /* --- Mobile Responsiveness Fixes --- */
+@media (max-width: 600px) {
+    /* 1. Ensure the main container doesn't overflow */
+    .checkout-page {
+        padding: 10px; /* Reduce outer padding */
+    }
+    
+    .checkout-page .main-container {
+        width: 100% !important;
+        box-sizing: border-box;
+    }
 
+    /* 2. Fix Address Detail Grid (Labels above Values) */
+    .address-detail-grid {
+        grid-template-columns: 1fr; /* Stack label and value */
+        gap: 5px;
+    }
+
+    .addr-label {
+        margin-top: 10px;
+        font-size: 11px;
+    }
+
+    .addr-value {
+        padding-left: 5px;
+        word-break: break-word; /* Prevents long text/emails from pushing the container */
+    }
+
+    /* 3. Fix Form Grid (Stacking Input Fields) */
+    .form-grid-2 {
+        grid-template-columns: 1fr; /* One field per row */
+        gap: 15px;
+    }
+
+    /* 4. Global Input Fix */
+    .form-input, 
+    .address-form-container input, 
+    .address-form-container select, 
+    .address-form-container textarea {
+        width: 100% !important;
+        max-width: 100%;
+        box-sizing: border-box; /* Crucial: includes padding in the 100% width */
+    }
+
+    /* 5. Adjust Header Spacing */
+    .address-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .address-accordion-title {
+        font-size: 14px;
+        padding: 12px;
+    }
+}
 @-webkit-keyframes zoom {
     from {-webkit-transform:scale(0)} 
     to {-webkit-transform:scale(1)}
@@ -888,6 +947,139 @@
 @keyframes zoom {
     from {transform:scale(0)} 
     to {transform:scale(1)}
+}
+/* --- Address List Styling --- */
+.address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.address-header h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+}
+
+.add-new-btn {
+    background-color: var(--color-primary-dark);
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.address-item {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.address-accordion-title {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background: #f9f9f9;
+    font-weight: bold;
+    color: var(--color-primary-dark);
+    transition: background 0.2s;
+}
+
+.address-accordion-title:hover {
+    background: var(--color-accent-green);
+}
+
+.address-content {
+    padding: 20px;
+    border-top: 1px solid #eee;
+    display: none; /* Controlled by JS */
+}
+
+/* Detail Grid Layout */
+.address-detail-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 10px 20px;
+    margin-bottom: 20px;
+}
+
+.addr-label {
+    color: var(--color-text-light);
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.addr-value {
+    color: var(--color-text-dark);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.address-full-row {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #eee;
+}
+
+/* Address Form Styling */
+.address-form-container {
+    padding: 20px;
+    background: #fcfcfc;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: none; /* Controlled by JS */
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Action Buttons */
+.address-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-green {
+    background-color: var(--color-border-green);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-remove {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
 }
     </style>
 </head>
@@ -910,12 +1102,24 @@
                 </label>
             </div>
             <div class='section-header'>DELIVERY ADDRESS</div>
-            <div class='address-box'>
-                <p>Yadanar Street, Chanayethazan Township, Mandalay, Mandalay Region</p>
+            <div class='card'>
+                <div class='address-header'>
+                    <h2 style='font-size: 24px;'>ADDRESS LIST</h2>
+                    <button class='add-new-btn' onclick='openNewAddressForm()'><i class='fas fa-plus'></i> Add New</button>
+                </div>
+
+                <div id='address-container'>
+                </div>
+
+                <div id='new-address-form-wrapper' class='address-form-container' style='border: 2px solid var(--rolex-green);'>
+                    <h3 style='margin-bottom:15px;'>Add New Address</h3>
+                    <div id='dynamic-new-form-fields'></div>
+                    <div style='margin-top:15px; display:flex; gap:10px; justify-content:flex-end;'>
+                        <button class='btn-remove' onclick='closeNewAddressForm()' style='background: #ccc; color: #333;'>Cancel</button>
+                        <button class='btn-green' onclick='saveNewAddress()'>Save Address</button>
+                    </div>
+                </div>
             </div>
-            <button class='add-new-address-btn'>
-                <i class='fas fa-plus'></i> Add New Address
-            </button>
             <hr>
 
             <div id='detailedPaymentSection' class='detailed-payment-selection'>
@@ -1247,48 +1451,41 @@ function setupFileInputListeners() {
         
         // 1. Update the display for Bank Transfer / COD
         function updateDisplay(paymentMethod) {
-            // paymentMethod is 'bank_transfer' or 'cod'
-            const isBankTransfer = paymentMethod === 'bank_transfer';
+    const isBankTransfer = paymentMethod === 'bank_transfer';
 
-            // Toggle visibility of Bank Transfer sections
-            detailedPaymentSection.style.display = isBankTransfer ? 'block' : 'none';
-            paymentConfirmationSection.style.display = isBankTransfer ? 'block' : 'none';
+    // Toggle visibility of Bank Transfer sections
+    detailedPaymentSection.style.display = isBankTransfer ? 'block' : 'none';
+    paymentConfirmationSection.style.display = isBankTransfer ? 'block' : 'none';
 
-            // Update the selected class for the high-level buttons
-            highLevelPaymentLabels.forEach(label => {
-                label.classList.remove('selected');
-                
-                let targetHtmlFor = '';
-                
-                // *** FIX APPLIED HERE ***
-                // Manually map 'bank_transfer' value to the correct ID 'pay-bank'
-                if (paymentMethod === 'bank_transfer') {
-                    targetHtmlFor = 'pay-bank'; 
-                } else {
-                    // This still works for 'cod' and prevents breaking that logic
-                    targetHtmlFor = `pay-${paymentMethod}`; 
-                }
-                
-                // Apply the 'selected' class if the label matches the target htmlFor
-                if (label.htmlFor === targetHtmlFor) {
-                    label.classList.add('selected');
-                }
-            });
-
-            // Update Order Summary & Dynamic Info
-            if (isBankTransfer) {
-                // If switching to Bank Transfer, find the currently checked detailed option and update summary
-                const checkedDetailedCard = document.querySelector('input[name="detailed_payment"]:checked');
-                if (checkedDetailedCard) {
-                    updateDetailedPaymentSummary(checkedDetailedCard);
-                }
-            } else { // COD
-                summaryPaymentName.textContent = 'Cash on Delivery';
-                summaryPaymentLogo.src = ''; // Clear logo
-                summaryPaymentLogo.alt = '';
-            }
+    // --- IMPROVED LOGIC FOR ACTIVE CLASS ---
+    // Instead of mapping strings, just check which radio is actually checked
+    highLevelPaymentLabels.forEach(label => {
+        const radioInside = label.querySelector('input[name="high_level_payment"]');
+        if (radioInside && radioInside.checked) {
+            label.classList.add('selected');
+        } else {
+            label.classList.remove('selected');
         }
-        
+    });
+
+    // Update Order Summary & Dynamic Info
+    if (isBankTransfer) {
+        const checkedDetailedCard = document.querySelector('input[name="detailed_payment"]:checked');
+        if (checkedDetailedCard) {
+            updateDetailedPaymentSummary(checkedDetailedCard);
+        }
+    } else { // COD
+        summaryPaymentName.textContent = 'Cash on Delivery';
+        summaryPaymentLogo.src = ''; 
+        summaryPaymentLogo.alt = '';
+    }
+}
+   // --- Initial Load ---
+const checkedRadio = document.querySelector('input[name="high_level_payment"]:checked');
+if (checkedRadio) {
+    // Calling the function ensures everything is in sync on page load
+    updateDisplay(checkedRadio.value);
+}     
         // 2. Update the Order Summary and QR/Card details based on the selected detailed payment option
         function updateDetailedPaymentSummary(radioElement) {
             const cardLabel = radioElement.closest('.payment-card');
@@ -1366,5 +1563,250 @@ function setupFileInputListeners() {
         const initialPayment = document.querySelector('input[name="high_level_payment"]:checked').value;
         updateDisplay(initialPayment);
     });
+    
+        const myanmarCities = [
+            {'name_en': 'Yangon'}, {'name_en': 'Mandalay'}, {'name_en': 'Nay Pyi Taw'}, {'name_en': 'Mawlamyine'}, {'name_en': 'Bago'},
+            {'name_en': 'Pathein'}, {'name_en': 'Monywa'}, {'name_en': 'Meiktila'}, {'name_en': 'Taunggyi'}, {'name_en': 'Myitkyina'},
+            {'name_en': 'Lashio'}, {'name_en': 'Sittwe'}, {'name_en': 'Pyay'}, {'name_en': 'Hinthada'}, {'name_en': 'Magway'},
+            {'name_en': 'Myeik'}, {'name_en': 'Taungoo'}, {'name_en': 'Myingyan'}, {'name_en': 'Dawei'}, {'name_en': 'Pakokku'},
+            {'name_en': 'Pyin Oo Lwin'}, {'name_en': 'Hpa-An'}, {'name_en': 'Kyaukse'}, {'name_en': 'Shwebo'}, {'name_en': 'Sagaing'},
+            {'name_en': 'Tachileik'}, {'name_en': 'Hakha'}, {'name_en': 'Loikaw'}, {'name_en': 'Kengtung'}, {'name_en': 'Thanlyin'},
+            {'name_en': 'Twantay'}, {'name_en': 'Kyauktan'}, {'name_en': 'Bogale'}, {'name_en': 'Pyapon'}, {'name_en': 'Kyaiklat'},
+            {'name_en': 'Maubin'}, {'name_en': 'Nyaungdon'}, {'name_en': 'Dedaye'}, {'name_en': 'Kyaukpyu'}, {'name_en': 'Thandwe'},
+            {'name_en': 'Toungup'}, {'name_en': 'Gwa'}, {'name_en': 'Manaung'}, {'name_en': 'Kyeintali'}, {'name_en': 'Minbya'},
+            {'name_en': 'Mrauk-U'}, {'name_en': 'Pauktaw'}, {'name_en': 'Myebon'}, {'name_en': 'Ann'}, {'name_en': 'Buthidaung'},
+            {'name_en': 'Maungdaw'}, {'name_en': 'Kyauktaw'}, {'name_en': 'Ponnagyun'}, {'name_en': 'Rathedaung'}, {'name_en': 'Kawthaung'},
+            {'name_en': 'Bokpyin'}, {'name_en': 'Yebyu'}, {'name_en': 'Launglon'}, {'name_en': 'Thayetchaung'}, {'name_en': 'Tanintharyi'},
+            {'name_en': 'Kyunsu'}, {'name_en': 'Myitta'}, {'name_en': 'Kawkareik'}, {'name_en': 'Myawaddy'}, {'name_en': 'Kyeikdon'},
+            {'name_en': 'Kyeikmaraw'}, {'name_en': 'Hlaingbwe'} , {'name_en' : 'Other'}
+        ];
+
+        const thailandCities = [
+            {'name_en': 'Bangkok'}, {'name_en': 'Samut Prakan'}, {'name_en': 'Nonthaburi'}, {'name_en': 'Pathum Thani'}, {'name_en': 'Phra Nakhon Si Ayutthaya'},
+            {'name_en': 'Ang Thong'}, {'name_en': 'Loburi'}, {'name_en': 'Sing Buri'}, {'name_en': 'Chai Nat'}, {'name_en': 'Saraburi'},
+            {'name_en': 'Chon Buri'}, {'name_en': 'Rayong'}, {'name_en': 'Chanthaburi'}, {'name_en': 'Trat'}, {'name_en': 'Chachoengsao'},
+            {'name_en': 'Prachin Buri'}, {'name_en': 'Nakhon Nayok'}, {'name_en': 'Sa Kaeo'}, {'name_en': 'Nakhon Ratchasima'}, {'name_en': 'Buri Ram'},
+            {'name_en': 'Surin'}, {'name_en': 'Si Sa Ket'}, {'name_en': 'Ubon Ratchathani'}, {'name_en': 'Yasothon'}, {'name_en': 'Chaiyaphum'},
+            {'name_en': 'Amnat Charoen'}, {'name_en': 'Bueng Kan'}, {'name_en': 'Nong Bua Lam Phu'}, {'name_en': 'Khon Kaen'}, {'name_en': 'Udon Thani'},
+            {'name_en': 'Loei'}, {'name_en': 'Nong Khai'}, {'name_en': 'Maha Sarakham'}, {'name_en': 'Roi Et'}, {'name_en': 'Kalasin'},
+            {'name_en': 'Sakon Nakhon'}, {'name_en': 'Nakhon Phanom'}, {'name_en': 'Mukdahan'}, {'name_en': 'Chiang Mai'}, {'name_en': 'Lamphun'},
+            {'name_en': 'Lampang'}, {'name_en': 'Uttaradit'}, {'name_en': 'Phrae'}, {'name_en': 'Nan'}, {'name_en': 'Phayao'},
+            {'name_en': 'Chiang Rai'}, {'name_en': 'Mae Hong Son'}, {'name_en': 'Nakhon Sawan'}, {'name_en': 'Uthai Thani'}, {'name_en': 'Kamphaeng Phet'},
+            {'name_en': 'Tak'}, {'name_en': 'Sukhothai'}, {'name_en': 'Phitsanulok'}, {'name_en': 'Phichit'}, {'name_en': 'Phetchabun'},
+            {'name_en': 'Ratchaburi'}, {'name_en': 'Kanchanaburi'}, {'name_en': 'Suphan Buri'}, {'name_en': 'Nakhon Pathom'}, {'name_en': 'Samut Sakhon'},
+            {'name_en': 'Samut Songkhram'}, {'name_en': 'Phetchaburi'}, {'name_en': 'Prachuap Khiri Khan'}, {'name_en': 'Nakhon Si Thammarat'}, {'name_en': 'Krabi'},
+            {'name_en': 'Phangnga'}, {'name_en': 'Phuket'}, {'name_en': 'Surat Thani'}, {'name_en': 'Ranong'}, {'name_en': 'Chumphon'},
+            {'name_en': 'Songkhla'}, {'name_en': 'Satun'}, {'name_en': 'Trang'}, {'name_en': 'Phatthalung'}, {'name_en': 'Pattani'},
+            {'name_en': 'Yala'}, {'name_en': 'Narathiwat'}, {'name_en' : 'Other'}
+        ];
+        
+         let addressData = [
+            { id: 1, isCurrent: true, street: 'Yadanar Street', township: 'Chanayethazan', city: 'Mandalay', state: 'Mandalay', country: 'Myanmar', postal: '1001', map: 'maplink1', fullAddress: 'Yadanar Street, Chanayethazan Township, Mandalay, Mandalay Region'},
+            { id: 2, isCurrent: false, street: 'Second Road', township: 'Bauktaw', city: 'Yangon', state: 'Yangon', country: 'Myanmar', postal: '1002', map: 'maplink2', fullAddress: 'Second Road, Bauktaw Township, Yangon, Yangon Region'},
+        ];
+        
+        let nextAddressId = 3;
+
+        const addressFormTemplate = (addr) => `
+                <div class='form-grid-2'>
+                    <div class='form-group'>
+                        <label class='label'>Street</label>
+                        <input type='text' class='form-input addr-street' placeholder='Street Address' value='${addr?.street || ''}'>
+                    </div>
+                    <div class='form-group'>
+                        <label class='label'>Township</label>
+                        <input type='text' class='form-input addr-township' placeholder='Township' value='${addr?.township || ''}'>
+                    </div>
+                </div>
+                <div class='form-grid-2'>
+                        <div class='form-group'>
+                        <label class='label'>State</label>
+                        <input type='text' class='form-input addr-state' placeholder='State/Province' value='${addr?.state || ''}'>
+                    </div>
+                    <div class='form-group'>
+                        <label class='label'>Postal Code</label>
+                        <input type='text' class='form-input addr-postal' placeholder='Postal Code' value='${addr?.postal || ''}'>
+                    </div>
+                </div>
+                <div class='form-grid-2'>
+                    <div class='form-group'>
+                        <label class='label'>Country</label>
+                        <select class='form-input addr-country' onchange='updateCities(this)' data-selected='${addr?.country || ''}'>
+                            <option value=''>Select Country</option>
+                            <option value='Myanmar'>Myanmar</option>
+                            <option value='Thailand'>Thailand</option>
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label class='label'>City</label>
+                        <select class='form-input addr-city' data-selected='${addr?.city || ''}'>
+                            <option value=''>Select City</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='form-group' style='margin-top:15px;'>
+                    <label class='label'>Complete Address</label>
+                    <textarea class='form-input addr-complete' rows='2' placeholder='Full Address string'>${addr?.fullAddress || ''}</textarea>
+                </div>
+                <div class='form-group' style='margin-top:15px;'>
+                    <label class='label'>Google Map Link</label>
+                    <input type='text' class='form-input addr-map' value='${addr?.map || ''}'>
+                </div>
+            `;
+        
+        function updateCities(countrySelect, cityValue = '') {
+            const row = countrySelect.closest('.address-form-container') || countrySelect.closest('.form-grid-2').parentNode;
+            const citySelect = row.querySelector('.addr-city');
+            const country = countrySelect.value;
+            
+           citySelect.innerHTML = '<option value="">Select City</option>';
+
+            let cities = [];
+            if (country === 'Myanmar') {
+                cities = myanmarCities.map(c => c.name_en);
+            } else if (country === 'Thailand') {
+                cities = thailandCities.map(c => c.name_en);
+            }
+
+            cities.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = city;
+                if (city === cityValue) {
+                    opt.selected = true;
+                }
+                citySelect.appendChild(opt);
+            });
+        }
+        
+        function loadCountryCity(formContainer, countryValue, cityValue) {
+            const countrySelect = formContainer.querySelector('.addr-country');
+            countrySelect.value = countryValue;
+            updateCities(countrySelect, cityValue);
+        }
+
+        function toggleAddress(id) {
+            const content = document.getElementById(`addr-content-${id}`);
+            const chevron = document.querySelector(`.address-accordion-title[data-id='${id}'] i`);
+            
+            const isClosing = content.style.display === 'block';
+
+            document.querySelectorAll('.address-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.address-form-container').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.address-accordion-title i').forEach(i => i.className = 'fas fa-chevron-right');
+            closeNewAddressForm();
+
+            if (isClosing) {
+                content.style.display = 'none';
+                chevron.className = 'fas fa-chevron-right';
+            } else {
+                content.style.display = 'block';
+                chevron.className = 'fas fa-chevron-down';
+            }
+        }
+
+        function editAddress(id) {
+            const addr = addressData.find(a => a.id === id);
+            if (!addr) return;
+            
+            document.getElementById(`addr-content-${id}`).style.display = 'none';
+            document.querySelectorAll('.address-form-container').forEach(el => el.style.display = 'none');
+            closeNewAddressForm();
+
+            const container = document.getElementById(`edit-form-container-${id}`);
+            container.innerHTML = `
+                ${addressFormTemplate(addr)}
+                <div style='margin-top:15px; text-align:right;'>
+                    <button class='btn-green' onclick='saveAddress(${id}, 'edit')'>Save Changes</button>
+                    <button class='btn-remove' style='background:#ccc; color:#333;' onclick='closeEdit(${id})'>Cancel</button>
+                </div>
+            `;
+            container.style.display = 'block';
+            loadCountryCity(container, addr.country, addr.city);
+        }
+
+        function closeEdit(id) {
+            document.getElementById(`edit-form-container-${id}`).style.display = 'none';
+            toggleAddress(id); 
+            renderAddresses();
+        }
+
+        function closeNewAddressForm() {
+             document.getElementById('new-address-form-wrapper').style.display = 'none';
+        }
+
+        function openNewAddressForm() {
+            document.querySelectorAll('.address-form-container').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.address-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.address-accordion-title i').forEach(i => i.className = 'fas fa-chevron-right');
+
+            const container = document.getElementById('dynamic-new-form-fields');
+            container.innerHTML = addressFormTemplate(null); 
+            document.getElementById('new-address-form-wrapper').style.display = 'block';
+        }
+        function renderAddresses() {
+    const container = document.getElementById('address-container');
+    const summaryAddressDisplay = document.querySelector('.address-value');
+    container.innerHTML = '';
+
+    addressData.forEach((addr, index) => {
+        const addressNumber = index + 1;
+        const item = document.createElement('div');
+        const isSelected = summaryAddressDisplay.textContent.includes(addr.street);
+        item.className = `address-item ${isSelected ? 'selected-address' : ''}`;
+        
+        const contentEl = document.getElementById(`addr-content-${addr.id}`);
+        const isExpanded = contentEl && contentEl.style.display === 'block';
+        const chevronClass = isExpanded ? 'fa-chevron-down' : 'fa-chevron-right';
+        const contentDisplay = isExpanded ? 'block' : 'none';
+
+        item.innerHTML = `
+            <div class='address-accordion-title' onclick='toggleAddress(${addr.id})' data-id='${addr.id}'>
+                <span>
+                    <i class='fas ${chevronClass}'></i> 
+                    ADDRESS ${addressNumber}
+                </span>
+                ${isSelected ? '<span class="selected-badge" style="color: var(--color-border-green); font-size: 12px;"><i class="fas fa-check-circle"></i> SELECTED</span>' : ''}
+            </div>
+            
+            <div class='address-content' id='addr-content-${addr.id}' style='display: ${contentDisplay};'>
+                <div class='address-detail-grid'>
+                    <div class='addr-label'>Street</div><div class='addr-value'>${addr.street || '-'}</div>
+                    <div class='addr-label'>Township</div><div class='addr-value'>${addr.township || '-'}</div>
+                    <div class='addr-label'>City</div><div class='addr-value'>${addr.city || '-'}</div>
+                    <div class='address-full-row'>
+                        <div class='addr-label'>Full Address</div>
+                        <div class='addr-value'>${addr.fullAddress || '-'}</div>
+                    </div>
+                </div>
+                
+                <div class='address-actions' style="justify-content: space-between; align-items: center;">
+                    <button class='btn-green' style="background-color: var(--color-primary-dark);" 
+                            onclick='selectAddress(${addr.id})'>Deliver to this Address</button>
+                    <div>
+                        <button class='btn-green' onclick='editAddress(${addr.id})'>Edit</button>
+                        <button class='btn-remove' onclick='removeAddress(${addr.id})'>Remove</button>
+                    </div>
+                </div>
+            </div>
+            <div id='edit-form-container-${addr.id}' class='address-form-container'></div>
+        `;
+        container.appendChild(item);
+    });
+}
+    function selectAddress(id) {
+    const selectedAddr = addressData.find(a => a.id === id);
+    if (selectedAddr) {
+        const summaryAddress = document.querySelector('.address-value');
+        summaryAddress.textContent = selectedAddr.fullAddress;
+
+        console.log("Delivery address updated to: " + selectedAddr.fullAddress);
+        
+        renderAddresses();
+    }
+}
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAddresses();
+        });
 </script>
 </html>

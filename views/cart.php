@@ -318,6 +318,7 @@ updateTotals();
 
 </body>
 </html>
+
 <?php
   include '../layout/footer.php';
 ?>
