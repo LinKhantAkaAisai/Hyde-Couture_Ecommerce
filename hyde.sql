@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2025 at 06:45 PM
+-- Generation Time: Jan 26, 2026 at 04:40 PM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -45,10 +45,10 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`, `profile`, `registerDate`) VALUES
-(1, 'Min Sitt', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@1989', '0823059272', '2004-06-30', 2, '198989', 42, '2025-10-01'),
+(1, 'Min Sitt Paing Oo', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@198989', '0823059272', '2004-06-30', 2, '198989', 63, '2025-10-01'),
 (2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, NULL, 35, '2025-09-18'),
-(3, 'Myat Thiri Khaing', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '09952090401', '2005-02-16', 1, NULL, 36, '2025-11-01'),
-(4, 'Taylor Swift', 'minsittmandalay137@gmail.com', 'Thanoswasright@1989', '0823059272', '1989-12-13', 1, NULL, 38, '2025-10-30');
+(3, 'Myat Thiri Khaing', 'myatthirikhaing@gmail.com', 'Thanoswasright@1989', '09952090401', '2005-02-16', 1, NULL, 36, '2025-11-01'),
+(4, 'Taylor Swift', 'taylorswift@gmail.com', 'Thanoswasright@1989', '0823059272', '1989-12-13', 1, NULL, 38, '2025-10-30');
 
 -- --------------------------------------------------------
 
@@ -250,7 +250,7 @@ CREATE TABLE `orderr` (
 
 INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`, `addressID`) VALUES
 (1, 1, 232500, '2025-11-06', 1, 3, 1, 2, 1, 2),
-(2, 1, 2227500, '2025-11-08', 3, 1, 1, 3, 1, 3),
+(2, 1, 2227500, '2025-11-08', 3, 5, 1, 3, 1, 3),
 (3, 1, 407500, '2025-11-05', 2, 1, 3, 4, 2, 4),
 (4, 0, 1973750, '2025-11-10', 2, 2, 1, 4, 2, 4);
 
@@ -272,7 +272,9 @@ CREATE TABLE `orderstatus` (
 INSERT INTO `orderstatus` (`orderStatusID`, `orderStatus`) VALUES
 (1, 'Active Order'),
 (2, 'Completed Order'),
-(3, 'Failed Order');
+(3, 'Failed Order'),
+(5, 'Return Order'),
+(6, 'Cancal Order');
 
 -- --------------------------------------------------------
 
@@ -293,7 +295,10 @@ CREATE TABLE `paymentslip` (
 INSERT INTO `paymentslip` (`paymentSlipID`, `paymentSlip`, `orderID`) VALUES
 (1, 32, 3),
 (2, 33, 4),
-(3, 34, 4);
+(3, 34, 4),
+(4, 57, 4),
+(5, 58, 4),
+(6, 61, 4);
 
 -- --------------------------------------------------------
 
@@ -356,8 +361,6 @@ INSERT INTO `photo` (`photoID`, `photoName`, `productID`) VALUES
 (3, 'p1_i3.jpg', 1),
 (4, 'p1_i4.jpg', 1),
 (5, 'p1_i5.jpg', 1),
-(6, 'p1_i6.jpg', 1),
-(7, 'p2_i1.jpg', 2),
 (8, 'p2_i2.jpg', 2),
 (9, 'p2_i3.jpg', 2),
 (10, 'p2_i4.jpg', 2),
@@ -377,7 +380,6 @@ INSERT INTO `photo` (`photoID`, `photoName`, `productID`) VALUES
 (24, 'p5_i3.jpg', 5),
 (25, 'p5_i4.jpg', 5),
 (26, 'p5_i5.jpg', 5),
-(27, 'p5_i6.jpg', 5),
 (28, 'p6_i1.jpg', 6),
 (29, 'p6_i2.jpg', 6),
 (30, 'p6_i3.jpg', 6),
@@ -392,7 +394,15 @@ INSERT INTO `photo` (`photoID`, `photoName`, `productID`) VALUES
 (39, 'hhh.jpg', NULL),
 (40, 'photo_2025-02-12_00-54-12 - Copy.jpg', NULL),
 (41, 'Purple Black Simple Music CD Cover.png', NULL),
-(42, 'photo_2025-02-12_00-54-12 - Copy.jpg', NULL);
+(42, 'photo_2025-02-12_00-54-12 - Copy.jpg', NULL),
+(56, 'profile_69438676acc326.81532826.jpg', NULL),
+(57, 'paymentSlip_6948f2680d7aa4.97234463.jpg', NULL),
+(58, 'paymentSlip_6948f2e9d674a0.88582765.jpg', NULL),
+(59, 'Screenshot 2025-10-22 at 4.19.34 PM.png', NULL),
+(60, 'minsitt.jpg', NULL),
+(61, 'paymentSlip_696a37c06b05f4.52388053.jpg', NULL),
+(62, 'IMG_1088.JPG', NULL),
+(63, 'IMG_1088.JPG', NULL);
 
 -- --------------------------------------------------------
 
@@ -416,7 +426,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`productID`, `productName`, `price`, `discountedPrice`, `postedDate`, `description`, `waitingWeek`, `preorder`) VALUES
-(1, 'ORIGAMI FADED WASH JEANS', 165000, NULL, '2025-10-31', 'AVAILABLE At Mercury physical stores', 3, 0),
+(1, 'ORIGAMI FADED WASH JEANS', 165000, NULL, '2025-10-31', 'AVAILABLE At Mercury physical stores at Taung Gyi', 4, 1),
 (2, 'VERVESV OG CLASSIC LOGO TEE', 77500, 67500, '2025-10-30', 'Crafted from 100% cotton 210gsm midweight single jersey fabric. 1x1 rib round neck. \nNew boxy cropped fit silhouette. \nOne of our signature rainbow reflective logo print on front. Cut, sewn and printed in Yangon. Designed by Vervesv in Bangkok.', 2, 1),
 (3, 'VERVESV Cotton Leather 6 Panel Hat', 57500, 50000, '2025-10-15', '• 100% washed cotton + PU leather\n• Embroidery eyelets\n• Flat embroidery logo\n• Tri glide buckle \n• Single stitch detailing at back \n• PU leather button on top\n• 6 panel cut \n• Designed by vervesv in Bangkok\n• Cut & sewn in China \n• Embroidered in Yangon', 2, 1),
 (4, 'Iconic V3 sweatshirt in black', 165000, 155000, '2025-10-01', '• 420gsm heavyweight loopback terry \n• 85% cotton 15% polyester mixed\n• 450gsm 1x1 ribbed cuff, hem & round neck\n• Iconic artwork printed on front & back\n• Loose fit cut & streetwear silhouette\n• Cut & sewn in China\n• Printed & finished in Myanmar', 2, 0),
@@ -440,18 +450,19 @@ CREATE TABLE `productxcategory` (
 --
 
 INSERT INTO `productxcategory` (`productxcategoryID`, `productID`, `categoryID`) VALUES
-(1, 1, 13),
-(2, 1, 14),
 (3, 2, 9),
 (4, 2, 10),
 (5, 3, 3),
 (6, 4, 20),
 (7, 4, 21),
-(9, 1, 27),
 (11, 5, 15),
 (12, 5, 16),
 (13, 5, 28),
-(14, 6, 17);
+(14, 6, 17),
+(36, 1, 13),
+(37, 1, 27),
+(38, 1, 14),
+(39, 1, 12);
 
 -- --------------------------------------------------------
 
@@ -470,7 +481,25 @@ CREATE TABLE `relatedproduct` (
 --
 
 INSERT INTO `relatedproduct` (`relatedProductID`, `productID1`, `productID2`) VALUES
-(1, 5, 4);
+(1, 5, 4),
+(28, 1, 4),
+(29, 4, 1),
+(30, 1, 5),
+(31, 5, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `review`
+--
+
+CREATE TABLE `review` (
+  `reviewID` int NOT NULL,
+  `review` longtext NOT NULL,
+  `productID` int NOT NULL,
+  `accountID` int NOT NULL,
+  `visible` tinyint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -703,6 +732,14 @@ ALTER TABLE `relatedproduct`
   ADD KEY `productID2` (`productID2`);
 
 --
+-- Indexes for table `review`
+--
+ALTER TABLE `review`
+  ADD PRIMARY KEY (`reviewID`),
+  ADD KEY `productID` (`productID`),
+  ADD KEY `accountID` (`accountID`);
+
+--
 -- Indexes for table `role`
 --
 ALTER TABLE `role`
@@ -737,13 +774,13 @@ ALTER TABLE `trackingstatus`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `accountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `accountID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -785,13 +822,13 @@ ALTER TABLE `orderr`
 -- AUTO_INCREMENT for table `orderstatus`
 --
 ALTER TABLE `orderstatus`
-  MODIFY `orderStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `orderStatusID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `paymentslip`
 --
 ALTER TABLE `paymentslip`
-  MODIFY `paymentSlipID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `paymentSlipID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `paymentstatus`
@@ -809,25 +846,31 @@ ALTER TABLE `paymenttype`
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `productID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `productxcategory`
 --
 ALTER TABLE `productxcategory`
-  MODIFY `productxcategoryID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `productxcategoryID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `relatedproduct`
 --
 ALTER TABLE `relatedproduct`
-  MODIFY `relatedProductID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `relatedProductID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT for table `review`
+--
+ALTER TABLE `review`
+  MODIFY `reviewID` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -845,7 +888,7 @@ ALTER TABLE `size`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `stockID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `stockID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `trackingstatus`
@@ -935,6 +978,13 @@ ALTER TABLE `productxcategory`
 ALTER TABLE `relatedproduct`
   ADD CONSTRAINT `relatedproduct_ibfk_1` FOREIGN KEY (`productID1`) REFERENCES `product` (`productID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `relatedproduct_ibfk_2` FOREIGN KEY (`productID2`) REFERENCES `product` (`productID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `review`
+--
+ALTER TABLE `review`
+  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`accountID`) REFERENCES `account` (`accountID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `stock`
