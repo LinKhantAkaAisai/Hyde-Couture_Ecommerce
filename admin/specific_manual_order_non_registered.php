@@ -7,12 +7,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 include './layout/login_error_message.php';
-$currentPage = "specific_order.php";
+$currentPage = "specific_manual_order.php";
 include './logInCheck.php'; 
 
 $orderID = $_GET['orderID'];
 
-$query = "SELECT * FROM orderr JOIN account ON orderr.accountID = account.accountID JOIN paymenttype ON orderr.paymentType = paymenttype.paymentTypeID WHERE orderr.orderID = $orderID";
+$query = "SELECT * FROM orderr JOIN paymenttype ON orderr.paymentType = paymenttype.paymentTypeID WHERE orderr.orderID = $orderID";
 $result = $conn->query($query);
 
 $query_paymentSlip = "SELECT * FROM paymentslip JOIN photo ON paymentslip.paymentSlip = photo.photoID WHERE paymentslip.orderID = $orderID";
@@ -382,7 +382,8 @@ $result_items = $conn->query($query_items);
                     echo "<h2 class='section-header'>Order Details</h2>";
                     echo "<div class='info-grid'>";
                     echo "<div class='info-card'><span class='info-label'>Order ID</span><span class='info-value'>". $row['orderID'] ."</span></div>";
-                    echo "<div class='info-card'><span class='info-label'>Customer Name</span><span class='info-value'>". $row['name'] ."</span></div>";
+                    echo "<div class='info-card'><span class='info-label'>Customer Name</span><span class='info-value'>". $row['manualCustomerName'] ."</span></div>";
+                    echo "<div class='info-card'><span class='info-label'>Note</span><span class='info-value'>".$row['manualNote']. "</span></div>";
                     echo "<div class='info-card'><span class='info-label'>Order Date</span><span class='info-value'>".$row['orderDate']. "</span></div>";
                     echo "<div class='info-card'><span class='info-label'>Sub Total</span><span class='info-value'>".$row['totalCost']." MMK</span></div>";
                     echo "<div class='info-card'><span class='info-label'>Payment Type</span><span class='info-value'>".$row['paymentType']."</span></div>";
@@ -390,7 +391,7 @@ $result_items = $conn->query($query_items);
                     echo "</div>";
 
                     echo "<h2 class='section-header'>Update Status</h2>";
-                    echo "<form method='POST' action='update_status.php'>";
+                    echo "<form method='POST' action='update_manual_status_non_registered.php'>";
                     echo "<label class='info-label'>Payment Valid:</label>";
                     echo "<select name='paymentValid'>";
                              echo "<option value='0'". ($row['paymentValid'] == 0 ? 'selected' : '').">Cannot pay anymore</option>";
@@ -450,6 +451,33 @@ $result_items = $conn->query($query_items);
                     }
                     echo "</div>";
 
+                    ?>
+
+                    <form method="POST" enctype="multipart/form-data" action="./upload_payment_slip_non_registered.php">
+                        <input type="hidden" name="orderID" value="<?php echo $orderID; ?>">
+
+                        <div class="input-group">
+                            <input type="file" name="payment_slip" class="form-control" id="slipFile" accept="image/*" required>
+                            <button class="btn btn-outline-secondary" type="button" id="browseBtn">
+                                <i class="fas fa-folder-open"></i>
+                            </button>
+                        </div>
+
+                        <div class="form-text mt-2">
+                            <i class="fas fa-file-image me-1"></i>Accepts: JPG, PNG, GIF, WebP (Max: 5MB)
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3">
+                            <button type="submit" id="submitBtn" class="btn btn-success px-4">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Slip
+                            </button>
+                        </div>
+                    </form>
+
+
+                    
+                    <?php 
+
                     echo "<h2 class='section-header'>Shipping Address</h2>";
                     echo "<div class='info-grid'>";
 
@@ -478,7 +506,7 @@ $result_items = $conn->query($query_items);
                     
                     echo "<h2 class='section-header'>Ordered Items</h2><br>";
                     
-                    echo "<a class='add-item-btn' href='adding_new_order_items.php?orderID=".$orderID."'>Add New Order Items</a>";
+                    echo "<a class='add-item-btn' href='adding_new_order_items_nonRegistered.php?orderID=".$orderID."'>Add New Order Items</a>";
 
                     echo "<table class='order-items-table'>";
                     echo "<thead><tr><th>Product Image</th><th>Product Details</th></tr></thead>";
@@ -547,7 +575,7 @@ $result_items = $conn->query($query_items);
 
                             echo "<div class='item-detail-row'><span class='item-detail-label'>Size</span><span class='item-detail-value'>".$row_items['sizeName']."</span></div>";
                             echo "<div class='item-detail-row'><span class='item-detail-label'>Color</span><span class='item-detail-value'>".$row_items['colorName']."</span></div>";
-                            echo "<a href='delete_manual_order_items.php?orderItemID=" . $row_items['orderItemID'] . "&orderID=" . $orderID . "' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this order item? This action cannot be undone.');\">Delete</a>";
+                            echo "<a href='delete_manual_order_items_non_registered.php?orderItemID=" . $row_items['orderItemID'] . "&orderID=" . $orderID . "' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this order item? This action cannot be undone.');\">Delete</a>";
 
                             // echo "<div class='item-detail-row'><span class='item-detail-label'>Color Code</span><span class='item-detail-value'><div style='width:40px; height:40px; background-color:".$row_items['colorCode']."; border-radius : 50%;'></div></span></div>";
                             echo "</td>";

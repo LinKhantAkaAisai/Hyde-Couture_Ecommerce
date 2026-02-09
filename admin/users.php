@@ -227,134 +227,127 @@ if ($export === 'csv') {
             margin: 20px 0;
         }
 
-        /* -------------------------------------------------
-   Rolex-Green Select Box Styling
-   ------------------------------------------------- */
-.header-actions select {
-    /* Base box */
-    background: #006400 !important;           /* Rolex dark green */
-    color: #fff !important;
-    border: 0px solid #b8860b !important;     /* Gold border */
-    padding: 8px 14px !important;
-    border-radius: 0 !important;
-    font-size: 0.9rem !important;
-    font-weight: 500 !important;
-    /* appearance: none !important;             Remove default arrow */
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%23b8860b' d='M0 0l6 8 6-8z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* Hover & focus */
-.header-actions select:hover,
-.header-actions select:focus {
-    background-color: #004d00 !important;     /* Slightly darker on hover */
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.3); /* Gold glow */
-}
-
-/* Dropdown options */
-.header-actions select option {
-    background: #e6f3e6 !important;           /* Light green background */
-    color: #004d00 !important;
-    font-weight: 600;
-}
-
-.header-actions select option:checked,
-.header-actions select option:hover {
-    background: #006400 !important;
-    color: #b8860b !important;                /* Gold text when selected/hovered */
-}
-
-        @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                text-align: center;
+        .header-actions select {
+                background: #006400 !important;         
+                color: #fff !important;
+                border: 0px solid #b8860b !important;    
+                padding: 8px 14px !important;
+                border-radius: 0 !important;
+                font-size: 0.9rem !important;
+                font-weight: 500 !important;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%23b8860b' d='M0 0l6 8 6-8z'/%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+                cursor: pointer;
+                transition: all 0.3s ease;
             }
 
-            .header-actions {
-                justify-content: center;
+            .header-actions select:hover,
+            .header-actions select:focus {
+                background-color: #004d00 !important;   
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.3);
             }
 
-            .orders-table {
-                border: 0;
-            }
-
-            .orders-table thead {
-                display: none;
-            }
-
-            .orders-table tbody tr {
-                display: block;
-                margin-bottom: 24px;
-                border: 1px solid #e0f0e0;
-                border-radius: 0;
-                padding: 16px;
-                background: white;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            }
-
-            .orders-table td {
-                display: block;
-                text-align: right;
-                padding: 12px 10px;
-                border: none;
-                position: relative;
-                padding-left: 50%;
-                font-size: 0.95rem;
-                color: #333;
-                box-sizing: border-box;
-            }
-
-            .orders-table td:before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                width: 50%;
-                padding-left: 10px;
-                padding-right: 10px;
+            .header-actions select option {
+                background: #e6f3e6 !important;         
+                color: #004d00 !important;
                 font-weight: 600;
-                color: #004d00;
-                text-transform: uppercase;
-                font-size: 0.8rem;
-                letter-spacing: 0.5px;
-                top: 50%;
-                transform: translateY(-50%);
-                text-align: left;
-                box-sizing: border-box;
             }
 
-            .orders-table td .order-id,
-            .orders-table td .status-badge {
-                background: #f0f8f0;
-                padding: 6px 10px;
-                border-radius: 0;
-                display: inline-block;
+            .header-actions select option:checked,
+            .header-actions select option:hover {
+                background: #006400 !important;
+                color: #b8860b !important;               
             }
 
-            .orders-table td strong {
-                color: #004d00;
-            }
+                    @media (max-width: 768px) {
+                        .page-header {
+                            flex-direction: column;
+                            text-align: center;
+                        }
 
-            .orders-table td:last-child {
-                text-align: center;
-                padding-top: 15px;
-            }
+                        .header-actions {
+                            justify-content: center;
+                        }
 
-            .btn-view {
-                width: 100%;
-                padding: 12px;
-                font-size: 1rem;
-            }
-        }
+                        .orders-table {
+                            border: 0;
+                        }
+
+                        .orders-table thead {
+                            display: none;
+                        }
+
+                        .orders-table tbody tr {
+                            display: block;
+                            margin-bottom: 24px;
+                            border: 1px solid #e0f0e0;
+                            border-radius: 0;
+                            padding: 16px;
+                            background: white;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                        }
+
+                        .orders-table td {
+                            display: block;
+                            text-align: right;
+                            padding: 12px 10px;
+                            border: none;
+                            position: relative;
+                            padding-left: 50%;
+                            font-size: 0.95rem;
+                            color: #333;
+                            box-sizing: border-box;
+                        }
+
+                        .orders-table td:before {
+                            content: attr(data-label);
+                            position: absolute;
+                            left: 0;
+                            width: 50%;
+                            padding-left: 10px;
+                            padding-right: 10px;
+                            font-weight: 600;
+                            color: #004d00;
+                            text-transform: uppercase;
+                            font-size: 0.8rem;
+                            letter-spacing: 0.5px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            text-align: left;
+                            box-sizing: border-box;
+                        }
+
+                        .orders-table td .order-id,
+                        .orders-table td .status-badge {
+                            background: #f0f8f0;
+                            padding: 6px 10px;
+                            border-radius: 0;
+                            display: inline-block;
+                        }
+
+                        .orders-table td strong {
+                            color: #004d00;
+                        }
+
+                        .orders-table td:last-child {
+                            text-align: center;
+                            padding-top: 15px;
+                        }
+
+                        .btn-view {
+                            width: 100%;
+                            padding: 12px;
+                            font-size: 1rem;
+                        }
+                    }
     </style>
 </head>
 <body>
     <?php
         include "nav.php";
-        $login = $_SESSION['login'] ?? false;  // Get from session
+        $login = $_SESSION['login'] ?? false; 
         if($login == true) {
         echo "<div class='main-content'>";
         
@@ -401,7 +394,7 @@ if ($export === 'csv') {
         echo "<div class='no-orders'>No User accounts at the moment.</div>";
     }
 
-    echo "</div>"; // .main-content
+    echo "</div>";
     }
 
         

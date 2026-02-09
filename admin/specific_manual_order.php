@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 include './layout/login_error_message.php';
-$currentPage = "specific_order.php";
+$currentPage = "specific_manual_order.php";
 include './logInCheck.php'; 
 
 $orderID = $_GET['orderID'];
@@ -347,8 +347,6 @@ $result_items = $conn->query($query_items);
         if($login == true) {
         echo "<div class='main-content'>";
 
-          
-
             if (isset($_GET['error']) || isset($error)) {
                 $errorCode = $_GET['error'] ?? $error;
                 $errorMessages = [
@@ -390,7 +388,7 @@ $result_items = $conn->query($query_items);
                     echo "</div>";
 
                     echo "<h2 class='section-header'>Update Status</h2>";
-                    echo "<form method='POST' action='update_status.php'>";
+                    echo "<form method='POST' action='update_manual_status.php'>";
                     echo "<label class='info-label'>Payment Valid:</label>";
                     echo "<select name='paymentValid'>";
                              echo "<option value='0'". ($row['paymentValid'] == 0 ? 'selected' : '').">Cannot pay anymore</option>";
@@ -409,7 +407,6 @@ $result_items = $conn->query($query_items);
 
                     }
    
-                    
                     if ($result_order_status && $result_order_status->num_rows > 0) {
                         echo "<label class='info-label'>Order Status</label>";
                         echo "<select name='orderStatus'>";
@@ -449,6 +446,33 @@ $result_items = $conn->query($query_items);
                         echo "<span class='no-slip'>Haven't submitted payment slip</span>";
                     }
                     echo "</div>";
+
+                    ?>
+
+                    <form method="POST" enctype="multipart/form-data" action="./upload_payment_slip.php">
+                        <input type="hidden" name="orderID" value="<?php echo $orderID; ?>">
+
+                        <div class="input-group">
+                            <input type="file" name="payment_slip" class="form-control" id="slipFile" accept="image/*" required>
+                            <button class="btn btn-outline-secondary" type="button" id="browseBtn">
+                                <i class="fas fa-folder-open"></i>
+                            </button>
+                        </div>
+
+                        <div class="form-text mt-2">
+                            <i class="fas fa-file-image me-1"></i>Accepts: JPG, PNG, GIF, WebP (Max: 5MB)
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3">
+                            <button type="submit" id="submitBtn" class="btn btn-success px-4">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Slip
+                            </button>
+                        </div>
+                    </form>
+
+
+                    
+                    <?php 
 
                     echo "<h2 class='section-header'>Shipping Address</h2>";
                     echo "<div class='info-grid'>";

@@ -324,6 +324,7 @@ body {
                 echo "<a href='user_failed_order.php?userID=".$row['accountID']."' class='btn btn-secondary'>Failed Orders</a>";
                 echo "<a href='user_return_order.php?userID=".$row['accountID']."' class='btn btn-secondary'>Return Orders</a>";
                 echo "<a href='user_cancal_order.php?userID=".$row['accountID']."' class='btn btn-secondary'>Cancal Orders</a>";
+                echo "<a href='user_manual_order.php?userID=".$row['accountID']."' class='btn btn-secondary'>Manual Orders</a>";
                 echo "</div>";
                 echo "</section>";
                 echo "</div>";

@@ -2,15 +2,14 @@
 
 include "../connection/connectdb.php";
 
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 include './layout/login_error_message.php';
-$currentPage = "active_order.php";
+$currentPage = "manual_order.php";
 include './logInCheck.php'; 
-
-$userID = $_GET['userID'] ;
 
 $filter = $_GET['filter'] ?? 'all';
 $export = $_GET['export'] ?? false;
@@ -22,14 +21,14 @@ if ($filter === 'this_week') {
     $whereDate = " AND YEAR(orderr.orderDate) = YEAR(CURDATE()) AND MONTH(orderr.orderDate) = MONTH(CURDATE())";
 }
 
-$query = "SELECT * FROM orderr JOIN account ON orderr.accountID = account.accountID WHERE orderr.orderStatus = 1 $whereDate AND orderr.accountID = $userID ORDER BY orderr.orderDate DESC";
+$query = "SELECT * FROM orderr WHERE orderr.isManual=1 $whereDate AND orderr.accountID is NULL ORDER BY orderr.orderDate DESC";
 $result = $conn->query($query);
 
 if ($export === 'csv') {
     $csvResult = $conn->query($query);
 
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=userID_'.$userID.'_active_orders_' . date('Ymd_His') . '.csv');
+    header('Content-Disposition: attachment; filename=manual_orders_non_registered_customers_' . date('Ymd_His') . '.csv');
 
     $out = fopen('php://output', 'w');
     fputcsv($out, ['Order ID', 'Customer Name', 'Sub Total (MMK)', 'Order Date', 'Status']);
@@ -37,7 +36,7 @@ if ($export === 'csv') {
     while ($row = $csvResult->fetch_assoc()) {
         fputcsv($out, [
             $row['orderID'],
-            $row['name'],
+            $row['manualCustomerName'],
             $row['totalCost'],
             date('M j, Y h:i A', strtotime($row['orderDate'])),
             'New Order'
@@ -53,7 +52,7 @@ if ($export === 'csv') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Active Order</title>
+    <title>Active Order</title>
     <?php include "./layout/header.php"; ?>
     <style>
         .main-content {
@@ -230,126 +229,143 @@ if ($export === 'csv') {
         }
 
         /* -------------------------------------------------
-   Rolex-Green Select Box Styling
-   ------------------------------------------------- */
-.header-actions select {
-    /* Base box */
-    background: #006400 !important;           /* Rolex dark green */
-    color: #fff !important;
-    border: 0px solid #b8860b !important;     /* Gold border */
-    padding: 8px 14px !important;
-    border-radius: 0 !important;
-    font-size: 0.9rem !important;
-    font-weight: 500 !important;
-    /* appearance: none !important;             Remove default arrow */
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%23b8860b' d='M0 0l6 8 6-8z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
 
-/* Hover & focus */
-.header-actions select:hover,
-.header-actions select:focus {
-    background-color: #004d00 !important;     /* Slightly darker on hover */
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.3); /* Gold glow */
-}
-
-/* Dropdown options */
-.header-actions select option {
-    background: #e6f3e6 !important;           /* Light green background */
-    color: #004d00 !important;
-    font-weight: 600;
-}
-
-.header-actions select option:checked,
-.header-actions select option:hover {
-    background: #006400 !important;
-    color: #b8860b !important;                /* Gold text when selected/hovered */
-}
-
-        @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                text-align: center;
+            .header-actions select {
+                /* Base box */
+                background: #006400 !important;           /* Rolex dark green */
+                color: #fff !important;
+                border: 0px solid #b8860b !important;     /* Gold border */
+                padding: 8px 14px !important;
+                border-radius: 0 !important;
+                font-size: 0.9rem !important;
+                font-weight: 500 !important;
+                /* appearance: none !important;             Remove default arrow */
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%23b8860b' d='M0 0l6 8 6-8z'/%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+                cursor: pointer;
+                transition: all 0.3s ease;
             }
 
-            .header-actions {
-                justify-content: center;
+            /* Hover & focus */
+            .header-actions select:hover,
+            .header-actions select:focus {
+                background-color: #004d00 !important;     /* Slightly darker on hover */
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.3); /* Gold glow */
             }
 
-            .orders-table {
-                border: 0;
-            }
-
-            .orders-table thead {
-                display: none;
-            }
-
-            .orders-table tbody tr {
-                display: block;
-                margin-bottom: 24px;
-                border: 1px solid #e0f0e0;
-                border-radius: 0;
-                padding: 16px;
-                background: white;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            }
-
-            .orders-table td {
-                display: block;
-                text-align: right;
-                padding: 12px 10px;
-                border: none;
-                position: relative;
-                padding-left: 50%;
-                font-size: 0.95rem;
-                color: #333;
-                box-sizing: border-box;
-            }
-
-            .orders-table td:before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                width: 50%;
-                padding-left: 10px;
-                padding-right: 10px;
+            /* Dropdown options */
+            .header-actions select option {
+                background: #e6f3e6 !important;           /* Light green background */
+                color: #004d00 !important;
                 font-weight: 600;
-                color: #004d00;
-                text-transform: uppercase;
-                font-size: 0.8rem;
-                letter-spacing: 0.5px;
-                top: 50%;
-                transform: translateY(-50%);
-                text-align: left;
-                box-sizing: border-box;
             }
 
-            .orders-table td .order-id,
-            .orders-table td .status-badge {
-                background: #f0f8f0;
-                padding: 6px 10px;
-                border-radius: 0;
-                display: inline-block;
+            .header-actions select option:checked,
+            .header-actions select option:hover {
+                background: #006400 !important;
+                color: #b8860b !important;                /* Gold text when selected/hovered */
             }
+                    .btn-add {
+                        background: rgba(255,255,255,0.15);
+                        border: none;
+                        color: white;
+                        padding: 8px 14px;
+                        border-radius: 0;
+                        font-size: 0.9rem;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        text-decoration: none;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    }
+                    .btn-add:hover {
+                        background: rgba(255,255,255,0.25);
+                        transform: translateY(-1px);
+                    }
 
-            .orders-table td strong {
-                color: #004d00;
-            }
+                    @media (max-width: 768px) {
+                        .page-header {
+                            flex-direction: column;
+                            text-align: center;
+                        }
 
-            .orders-table td:last-child {
-                text-align: center;
-                padding-top: 15px;
-            }
+                        .header-actions {
+                            justify-content: center;
+                        }
 
-            .btn-view {
-                width: 100%;
-                padding: 12px;
-                font-size: 1rem;
-            }
+                        .orders-table {
+                            border: 0;
+                        }
+
+                        .orders-table thead {
+                            display: none;
+                        }
+
+                        .orders-table tbody tr {
+                            display: block;
+                            margin-bottom: 24px;
+                            border: 1px solid #e0f0e0;
+                            border-radius: 0;
+                            padding: 16px;
+                            background: white;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                        }
+
+                        .orders-table td {
+                            display: block;
+                            text-align: right;
+                            padding: 12px 10px;
+                            border: none;
+                            position: relative;
+                            padding-left: 50%;
+                            font-size: 0.95rem;
+                            color: #333;
+                            box-sizing: border-box;
+                        }
+
+                        .orders-table td:before {
+                            content: attr(data-label);
+                            position: absolute;
+                            left: 0;
+                            width: 50%;
+                            padding-left: 10px;
+                            padding-right: 10px;
+                            font-weight: 600;
+                            color: #004d00;
+                            text-transform: uppercase;
+                            font-size: 0.8rem;
+                            letter-spacing: 0.5px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            text-align: left;
+                            box-sizing: border-box;
+                        }
+
+                        .orders-table td .order-id,
+                        .orders-table td .status-badge {
+                            background: #f0f8f0;
+                            padding: 6px 10px;
+                            border-radius: 0;
+                            display: inline-block;
+                        }
+
+                        .orders-table td strong {
+                            color: #004d00;
+                        }
+
+                        .orders-table td:last-child {
+                            text-align: center;
+                            padding-top: 15px;
+                        }
+
+                        .btn-view {
+                            width: 100%;
+                            padding: 12px;
+                            font-size: 1rem;
+                        }
         }
     </style>
 </head>
@@ -362,10 +378,12 @@ if ($export === 'csv') {
         
         echo "<form id='filterForm' method='get' style='display:inline;'>";
             echo "<div class='page-header'>";
-            echo "<h1>User Active Orders</h1>";
+            echo "<h1>Manaul Orders</h1>";
             echo "<div class='header-actions'>";
 
-            echo "<input type='hidden' name='userID' value='" . htmlspecialchars($userID) . "'>";
+
+            echo "<a href='non_registered_customer.php' class='btn-add'><i class='bi bi-plus'></i> Add New Order For Non-Registered Customer</a>";
+
             echo "<button type='submit' name='export' value='csv'><i class='bi bi-download'></i> Export</button>";
 
             echo "<select name='filter' onchange='document.getElementById(\"filterForm\").submit();'>";
@@ -380,7 +398,7 @@ if ($export === 'csv') {
             echo "<table class='orders-table'>";
             echo "<thead><tr>";
             echo "<th>Order ID</th>";
-            echo "<th>Name</th>";
+            echo "<th>Customer Name</th>";
             echo "<th>Sub Total</th>";
             echo "<th>Order Date</th>";
             echo "<th>Status</th>";
@@ -394,16 +412,20 @@ if ($export === 'csv') {
                 
                 echo "<tr>";
                 echo "<td data-label='Order ID'><span class='order-id'>" . htmlspecialchars($row['orderID']) . "</span></td>";
-                echo "<td data-label='Name'>" . htmlspecialchars($row['name']) . "</td>";
+                
+               
+                echo "<td data-label='Name'>" . htmlspecialchars($row['manualCustomerName']) . "</td>";
+               
+                
                 echo "<td data-label='Total Cost'><strong>" . number_format($row['totalCost']) . " MMK</strong></td>";
                 echo "<td data-label='Order Date'>" . date('M j, Y', strtotime($row['orderDate'])) . "</td>";
                 echo "<td data-label='Status'><span class='status-badge $statusClass'>$statusText</span></td>";
-                echo "<td data-label='Action'><a href='specific_order.php?orderID=" . urlencode($row['orderID']) . "' class='btn-view'>View</a></td>";
+                echo "<td data-label='Action'><a href='specific_manual_order_non_registered.php?orderID=" . urlencode($row['orderID']) . "' class='btn-view'>View</a></td>";
                 echo "</tr>";
             }
             echo "</tbody></table>";
         } else {
-            echo "<div class='no-orders'>No active orders at the moment.</div>";
+            echo "<div class='no-orders'>No Manual orders at the moment.</div>";
         }
 
         echo "</div>"; // .main-content

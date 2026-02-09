@@ -111,7 +111,7 @@ if (isset($_POST['orderID'])) {
         }
 
         // Redirect with appropriate message
-        $redirect_url = "specific_order.php?orderID=$orderID";
+        $redirect_url = "specific_manual_order.php?orderID=$orderID";
         if ($error_code) {
             $redirect_url .= "&error=$error_code";
         } else {
@@ -125,7 +125,7 @@ if (isset($_POST['orderID'])) {
 
     } else {
         $stmt->close();
-        header("Location: specific_order.php?orderID=$orderID&error=update_failed");
+        header("Location: specific_manual_order.php?orderID=$orderID&error=update_failed");
         exit;
     }
 }
