@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2026 at 04:40 PM
+-- Generation Time: Feb 09, 2026 at 06:53 AM
 -- Server version: 8.0.33
 -- PHP Version: 8.2.4
 
@@ -45,7 +45,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `name`, `email`, `passcode`, `phoneNumber`, `birthday`, `roleID`, `pin`, `profile`, `registerDate`) VALUES
-(1, 'Min Sitt Paing Oo', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@198989', '0823059272', '2004-06-30', 2, '198989', 63, '2025-10-01'),
+(1, 'Min Sitt Paing Oo', 'minsitt.p67@rsu.ac.th', 'Thanoswasright@198989', '0823059272', '2004-06-30', 2, '198989', 64, '2025-10-01'),
 (2, 'Jennifer', 'nikkijen1411@gmail.com', 'Thanoswasright@1989', '09952090401', '2004-11-14', 1, NULL, 35, '2025-09-18'),
 (3, 'Myat Thiri Khaing', 'myatthirikhaing@gmail.com', 'Thanoswasright@1989', '09952090401', '2005-02-16', 1, NULL, 36, '2025-11-01'),
 (4, 'Taylor Swift', 'taylorswift@gmail.com', 'Thanoswasright@1989', '0823059272', '1989-12-13', 1, NULL, 38, '2025-10-30');
@@ -65,8 +65,8 @@ CREATE TABLE `address` (
   `postalCode` varchar(2000) NOT NULL,
   `country` varchar(2000) NOT NULL,
   `completeAddress` varchar(2000) NOT NULL,
-  `mapLink` varchar(2000) NOT NULL,
-  `accountID` int NOT NULL
+  `mapLink` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `accountID` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
@@ -77,7 +77,8 @@ INSERT INTO `address` (`addressID`, `street`, `township`, `city`, `state`, `post
 (1, 'Ek Charoean Alley 6', 'Lak Hok', 'Bangkok', 'Mueang Pathum Thani', '12000', 'Thailand', 'Ek Charoen 6 Alley, Lak Hok, Mueang Pathum Thani District, Pathum Thani 12000', 'https://maps.app.goo.gl/z3gLy4EaWnToyFDCA', 1),
 (2, '17th street', 'Aung Myae Thar Zan', 'Mandalay', 'Mandalay', '05011', 'Myanmar', 'Cornor of 17th & 89th street, Chan Aye Thar Zan township, Mandalay', '', 2),
 (3, '62th street', 'Aung Myae Thar Zan', 'Yangon', 'Yangon', '11421', 'Myanmar', '62th street, between 19th and 20th street, Yangon,Myanmar', '', 3),
-(4, '19th street', 'North Dagon', 'Khao Yai', 'Pak Chong', '12000', 'Thailand', 'room 39, Movin\' pick resort, Khao Yai', 'https://maps.app.goo.gl/eDrSZrL1ZrBjjf2o6', 4);
+(4, '19th street', 'North Dagon', 'Khao Yai', 'Pak Chong', '12000', 'Thailand', 'room 39, Movin\' pick resort, Khao Yai', 'https://maps.app.goo.gl/eDrSZrL1ZrBjjf2o6', 4),
+(32, 'RS', 'rs', 'Bangkok', 'rs', 'rs', 'Thailand', 'RS, rs, rs, Bangkok, Thailand rs', 'https://maps.app.goo.gl/eaz5gCH24up9iJW98', NULL);
 
 -- --------------------------------------------------------
 
@@ -207,23 +208,24 @@ CREATE TABLE `orderitem` (
   `orderID` int NOT NULL,
   `discountedTotalCost` double DEFAULT NULL,
   `color` int NOT NULL,
-  `size` int NOT NULL
+  `size` int NOT NULL,
+  `isStockReduce` tinyint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `orderitem`
 --
 
-INSERT INTO `orderitem` (`orderItemID`, `quantity`, `productID`, `totalCost`, `orderID`, `discountedTotalCost`, `color`, `size`) VALUES
-(1, 1, 1, 165000, 1, NULL, 1, 1),
-(2, 1, 2, 67500, 1, NULL, 1, 4),
-(3, 15, 1, 2475000, 2, 2227500, 1, 2),
-(4, 1, 1, 165000, 3, NULL, 1, 4),
-(5, 1, 4, 165000, 3, NULL, 1, 4),
-(6, 1, 6, 77500, 3, NULL, 5, 2),
-(7, 35, 2, 2362500, 4, 1653750, 1, 4),
-(8, 1, 1, 165000, 4, NULL, 1, 3),
-(9, 1, 4, 155000, 4, NULL, 1, 5);
+INSERT INTO `orderitem` (`orderItemID`, `quantity`, `productID`, `totalCost`, `orderID`, `discountedTotalCost`, `color`, `size`, `isStockReduce`) VALUES
+(1, 1, 1, 165000, 1, NULL, 1, 1, NULL),
+(2, 1, 2, 67500, 1, NULL, 1, 4, NULL),
+(3, 15, 1, 2475000, 2, 2227500, 1, 2, NULL),
+(4, 1, 1, 165000, 3, NULL, 1, 4, NULL),
+(5, 1, 4, 165000, 3, NULL, 1, 4, NULL),
+(6, 1, 6, 77500, 3, NULL, 5, 2, NULL),
+(7, 35, 2, 2362500, 4, 1653750, 1, 4, NULL),
+(8, 1, 1, 165000, 4, NULL, 1, 3, NULL),
+(53, 10, 1, 1650000, 67, 1485000, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -233,26 +235,30 @@ INSERT INTO `orderitem` (`orderItemID`, `quantity`, `productID`, `totalCost`, `o
 
 CREATE TABLE `orderr` (
   `orderID` int NOT NULL,
-  `paymentValid` tinyint NOT NULL,
-  `totalCost` double NOT NULL,
+  `paymentValid` tinyint DEFAULT NULL,
+  `totalCost` double DEFAULT NULL,
   `orderDate` date DEFAULT NULL,
   `paymentStatus` int DEFAULT NULL,
   `orderStatus` int DEFAULT NULL,
   `trackingStatus` int DEFAULT NULL,
-  `accountID` int NOT NULL,
+  `accountID` int DEFAULT NULL,
   `paymentType` int DEFAULT NULL,
-  `addressID` int DEFAULT NULL
+  `addressID` int DEFAULT NULL,
+  `isManual` tinyint DEFAULT NULL,
+  `manualCustomerName` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `manualNote` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `orderr`
 --
 
-INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`, `addressID`) VALUES
-(1, 1, 232500, '2025-11-06', 1, 3, 1, 2, 1, 2),
-(2, 1, 2227500, '2025-11-08', 3, 5, 1, 3, 1, 3),
-(3, 1, 407500, '2025-11-05', 2, 1, 3, 4, 2, 4),
-(4, 0, 1973750, '2025-11-10', 2, 2, 1, 4, 2, 4);
+INSERT INTO `orderr` (`orderID`, `paymentValid`, `totalCost`, `orderDate`, `paymentStatus`, `orderStatus`, `trackingStatus`, `accountID`, `paymentType`, `addressID`, `isManual`, `manualCustomerName`, `manualNote`) VALUES
+(1, 1, 232500, '2025-11-06', 1, 3, 1, 2, 1, 2, 0, '', '0'),
+(2, 1, 2227500, '2025-11-08', 3, 5, 1, 3, 1, 3, 0, '', '0'),
+(3, 1, 407500, '2025-11-05', 2, 1, 3, 4, 2, 4, 0, '', '0'),
+(4, 0, 1818750, '2025-11-10', 2, 2, 1, 4, 2, 4, 0, '', '0'),
+(67, 1, 1485000, '2026-02-06', 1, 1, 1, NULL, 2, 32, 1, 'Vivian Nora', 'Vivian is a gril from Rangsit uni, bangkok');
 
 -- --------------------------------------------------------
 
@@ -402,7 +408,12 @@ INSERT INTO `photo` (`photoID`, `photoName`, `productID`) VALUES
 (60, 'minsitt.jpg', NULL),
 (61, 'paymentSlip_696a37c06b05f4.52388053.jpg', NULL),
 (62, 'IMG_1088.JPG', NULL),
-(63, 'IMG_1088.JPG', NULL);
+(63, 'IMG_1088.JPG', NULL),
+(64, 'minsitt.jpg', NULL),
+(65, 'paymentSlip_69838486d70700.92088116.jpg', NULL),
+(66, 'paymentSlip_698384906447e6.88017636.jpg', NULL),
+(67, 'paymentSlip_698387c8a66c98.08596404.jpg', NULL),
+(68, 'paymentSlip_698625ec284209.06066564.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -564,28 +575,28 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`stockID`, `quantity`, `productID`, `sizeID`, `colorID`) VALUES
-(1, 10, 1, 1, 1),
-(2, 10, 1, 2, 1),
-(3, 10, 1, 3, 1),
-(4, 10, 1, 4, 1),
-(5, 10, 1, 5, 1),
-(6, 11, 1, 6, 1),
-(7, 10, 2, 4, 1),
-(8, 10, 2, 5, 1),
-(9, 10, 3, 4, 2),
-(10, 10, 3, 4, 3),
-(11, 10, 4, 4, 1),
-(12, 15, 4, 5, 1),
-(13, 10, 5, 3, 1),
-(14, 10, 5, 4, 1),
-(15, 10, 6, 2, 4),
-(16, 10, 6, 2, 5),
-(17, 10, 6, 3, 4),
-(18, 10, 6, 3, 5),
+(1, 570, 1, 1, 1),
+(2, 99, 1, 2, 1),
+(3, 99, 1, 3, 1),
+(4, 988, 1, 4, 1),
+(5, 1000, 1, 5, 1),
+(6, 11109, 1, 6, 1),
+(7, 2879, 2, 4, 1),
+(8, 1000, 2, 5, 1),
+(9, 10000, 3, 4, 2),
+(10, 7000, 3, 4, 3),
+(11, 80000, 4, 4, 1),
+(12, 1500, 4, 5, 1),
+(13, 4000, 5, 3, 1),
+(14, 5000, 5, 4, 1),
+(15, 7000, 6, 2, 4),
+(16, 1000, 6, 2, 5),
+(17, 1000, 6, 3, 4),
+(18, 1000, 6, 3, 5),
 (19, 10, 6, 4, 4),
-(20, 10, 6, 4, 5),
+(20, 1009, 6, 4, 5),
 (21, 10, 6, 5, 4),
-(23, 10, 6, 5, 5);
+(23, 6777, 6, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -780,7 +791,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `addressID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -810,13 +821,13 @@ ALTER TABLE `favourite`
 -- AUTO_INCREMENT for table `orderitem`
 --
 ALTER TABLE `orderitem`
-  MODIFY `orderItemID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `orderItemID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `orderr`
 --
 ALTER TABLE `orderr`
-  MODIFY `orderID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `orderID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `orderstatus`
@@ -828,7 +839,7 @@ ALTER TABLE `orderstatus`
 -- AUTO_INCREMENT for table `paymentslip`
 --
 ALTER TABLE `paymentslip`
-  MODIFY `paymentSlipID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `paymentSlipID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `paymentstatus`
@@ -846,7 +857,7 @@ ALTER TABLE `paymenttype`
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `photoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `product`
